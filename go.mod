@@ -1,4 +1,4 @@
-module github.com/armosec/utils-k8s-go/cluster-container-scanner-api
+module github.com/armosec/cluster-container-scanner-api
 
 go 1.17
 
