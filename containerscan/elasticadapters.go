@@ -1,6 +1,9 @@
 package containerscan
 
-import cautils "github.com/armosec/utils-k8s-go/armometadata"
+import (
+	cautils "github.com/armosec/utils-k8s-go/armometadata"
+	"github.com/armosec/utils-k8s-go/wlid"
+)
 
 // ToFlatVulnerabilities - returnsgit p
 func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerVulnerabilityResult {
@@ -54,7 +57,7 @@ func (scanresult *ScanResultReport) Summarize() *ElasticContainerScanSummaryResu
 		ListOfDangerousArtifcats: scanresult.ListOfDangerousArtifcats,
 	}
 
-	obj, e := cautils.SpiffeToSpiffeInfo(scanresult.WLID)
+	obj, e := wlid.SpiffeToSpiffeInfo(scanresult.WLID)
 
 	if e == nil {
 		summary.Cluster = obj.Level0
