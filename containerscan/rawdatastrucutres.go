@@ -27,22 +27,27 @@ type ScanResultLayer struct {
 	Packages        LinuxPkgs           `json:"packageToFile"`
 }
 
+type VulnerabilityCategory struct {
+	IsRCE bool `json:"isRce"`
+}
+
 // Vulnerability - a vul object
 type Vulnerability struct {
-	Name               string      `json:"name"`
-	ImgHash            string      `json:"imageHash"`
-	ImgTag             string      `json:"imageTag"`
-	RelatedPackageName string      `json:"packageName"`
-	PackageVersion     string      `json:"packageVersion"`
-	Link               string      `json:"link"`
-	Description        string      `json:"description"`
-	Severity           string      `json:"severity"`
-	Metadata           interface{} `json:"metadata"`
-	Fixes              VulFixes    `json:"fixedIn"`
-	Relevancy          string      `json:"relevant"` // use the related enum
-	UrgentCount        int         `json:"urgent"`
-	NeglectedCount     int         `json:"neglected"`
-	HealthStatus       string      `json:"healthStatus"`
+	Name               string                `json:"name"`
+	ImgHash            string                `json:"imageHash"`
+	ImgTag             string                `json:"imageTag"`
+	RelatedPackageName string                `json:"packageName"`
+	PackageVersion     string                `json:"packageVersion"`
+	Link               string                `json:"link"`
+	Description        string                `json:"description"`
+	Severity           string                `json:"severity"`
+	Metadata           interface{}           `json:"metadata"`
+	Fixes              VulFixes              `json:"fixedIn"`
+	Relevancy          string                `json:"relevant"` // use the related enum
+	UrgentCount        int                   `json:"urgent"`
+	NeglectedCount     int                   `json:"neglected"`
+	HealthStatus       string                `json:"healthStatus"`
+	Categories         VulnerabilityCategory `json:"categories"`
 }
 
 // FixedIn when and which pkg was fixed (which version as well)

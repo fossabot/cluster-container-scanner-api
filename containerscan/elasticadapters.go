@@ -26,8 +26,11 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerV
 			result.RelevantLinks = append(result.RelevantLinks, "https://nvd.nist.gov/vuln/detail/"+vul.Name)
 			result.RelevantLinks = append(result.RelevantLinks, vul.Link)
 			result.Vulnerability.Link = "https://nvd.nist.gov/vuln/detail/" + vul.Name
+
+			result.Categories.IsRCE = result.IsRCE()
 			vuls = append(vuls, result)
 			vul2indx[vul.Name] = len(vuls) - 1
+
 		}
 	}
 	// find first introduced

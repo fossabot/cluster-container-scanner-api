@@ -57,8 +57,8 @@ github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da/go.mod h1:Q73ZrmV
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/armosec/utils-go v0.0.2 h1:NSzLcWNI0GoJ8SS+cvaiOPD/raBkS0ghZ1639cCXhfU=
 github.com/armosec/utils-go v0.0.2/go.mod h1:itWmRLzRdsnwjpEOomL0mBWGnVNNIxSjDAdyc+b0iUo=
-github.com/armosec/utils-k8s-go v0.0.1 h1:Ay3y7fW+4+FjVc0+obOWm8YsnEvM31vPAVoKTyTAFRk=
-github.com/armosec/utils-k8s-go v0.0.1/go.mod h1:qrU4pmY2iZsOb39Eltpm0sTTNM3E4pmeyWx4dgDUC2U=
+github.com/armosec/utils-k8s-go v0.0.2 h1:PvG/yzkl3TS5n0LIoY68Dc/yL79xykz5HIjZUpP3BmQ=
+github.com/armosec/utils-k8s-go v0.0.2/go.mod h1:qrU4pmY2iZsOb39Eltpm0sTTNM3E4pmeyWx4dgDUC2U=
 github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a/go.mod h1:lB+ZfQJz7igIIfQNfa7Ml4HSf2uFQQRzpGGRXenZAgY=
 github.com/benbjohnson/clock v1.0.3/go.mod h1:bGMdMPoPVvcYyt1gHDf4J2KE153Yf9BuiUKYMaxlTDM=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
