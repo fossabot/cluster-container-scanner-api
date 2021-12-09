@@ -3,7 +3,7 @@ module github.com/armosec/cluster-container-scanner-api
 go 1.17
 
 require (
-	github.com/armosec/armoapi-go v0.0.31
+	github.com/armosec/armoapi-go v0.0.32
 	github.com/armosec/utils-k8s-go v0.0.2
 	github.com/francoispqt/gojay v1.2.13
 )

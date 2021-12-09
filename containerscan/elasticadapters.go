@@ -1,14 +1,16 @@
 package containerscan
 
 import (
+	"github.com/armosec/armoapi-go/armotypes"
 	cautils "github.com/armosec/utils-k8s-go/armometadata"
-	"github.com/armosec/utils-k8s-go/wlid"
 )
 
 // ToFlatVulnerabilities - returnsgit p
 func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerVulnerabilityResult {
 	vuls := make([]*ElasticContainerVulnerabilityResult, 0)
 	vul2indx := make(map[string]int)
+	scanID := scanresult.AsFNVHash()
+	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
 	for _, layer := range scanresult.Layers {
 		for _, vul := range layer.Vulnerabilities {
 			esLayer := ESLayer{LayerHash: layer.LayerHash, ParentLayerHash: layer.ParentLayerHash}
@@ -16,11 +18,15 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerV
 				vuls[indx].Layers = append(vuls[indx].Layers, esLayer)
 				continue
 			}
-			result := &ElasticContainerVulnerabilityResult{WLID: scanresult.WLID, Timestamp: scanresult.Timestamp}
+			result := &ElasticContainerVulnerabilityResult{WLID: scanresult.WLID,
+				Timestamp:   scanresult.Timestamp,
+				Designators: *designatorsObj,
+				Context:     ctxList}
+
 			result.Vulnerability = vul
 			result.Layers = make([]ESLayer, 0)
 			result.Layers = append(result.Layers, esLayer)
-			result.ContainerScanID = scanresult.AsFNVHash()
+			result.ContainerScanID = scanID
 
 			result.IsFixed = CalculateFixed(vul.Fixes)
 			result.RelevantLinks = append(result.RelevantLinks, "https://nvd.nist.gov/vuln/detail/"+vul.Name)
@@ -49,7 +55,10 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerV
 }
 
 func (scanresult *ScanResultReport) Summarize() *ElasticContainerScanSummaryResult {
+	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
 	summary := &ElasticContainerScanSummaryResult{
+		Designators:              *designatorsObj,
+		Context:                  ctxList,
 		CustomerGUID:             scanresult.CustomerGUID,
 		ImgTag:                   scanresult.ImgTag,
 		ImgHash:                  scanresult.ImgHash,
@@ -60,12 +69,8 @@ func (scanresult *ScanResultReport) Summarize() *ElasticContainerScanSummaryResu
 		ListOfDangerousArtifcats: scanresult.ListOfDangerousArtifcats,
 	}
 
-	obj, e := wlid.SpiffeToSpiffeInfo(scanresult.WLID)
-
-	if e == nil {
-		summary.Cluster = obj.Level0
-		summary.Namespace = obj.Level1
-	}
+	summary.Cluster = designatorsObj.Attributes[armotypes.AttributeCluster]
+	summary.Namespace = designatorsObj.Attributes[armotypes.AttributeNamespace]
 
 	imageInfo, e2 := cautils.ImageTagToImageInfo(scanresult.ImgTag)
 	if e2 == nil {

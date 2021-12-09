@@ -65,8 +65,8 @@ github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kd
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
 github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da/go.mod h1:Q73ZrmVTwzkszR9V5SSuryQ31EELlFMUz1kKyl939pY=
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
-github.com/armosec/armoapi-go v0.0.31 h1:JbZSk0OcL8dmqpSaO+Q9Y72l98Vz8lDO9gVfovhlW2o=
-github.com/armosec/armoapi-go v0.0.31/go.mod h1:iaVVGyc23QGGzAdv4n+szGQg3Rbpixn9yQTU3qWRpaw=
+github.com/armosec/armoapi-go v0.0.32 h1:6hF6Xt6XLro+m6iotgJLEN+X9gjSEQRKPPaMDmQhd80=
+github.com/armosec/armoapi-go v0.0.32/go.mod h1:iaVVGyc23QGGzAdv4n+szGQg3Rbpixn9yQTU3qWRpaw=
 github.com/armosec/utils-go v0.0.2 h1:NSzLcWNI0GoJ8SS+cvaiOPD/raBkS0ghZ1639cCXhfU=
 github.com/armosec/utils-go v0.0.2/go.mod h1:itWmRLzRdsnwjpEOomL0mBWGnVNNIxSjDAdyc+b0iUo=
 github.com/armosec/utils-k8s-go v0.0.1/go.mod h1:qrU4pmY2iZsOb39Eltpm0sTTNM3E4pmeyWx4dgDUC2U=
