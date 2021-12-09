@@ -77,3 +77,14 @@ func TestGetByPkgNameMissing(t *testing.T) {
 	}
 
 }
+
+func TestCalculateFixed(t *testing.T) {
+	res := CalculateFixed([]FixedIn{{
+		Name:    "",
+		ImgTag:  "",
+		Version: "",
+	}})
+	if 0 != res {
+		t.Errorf("wrong fix status: %v", res)
+	}
+}
