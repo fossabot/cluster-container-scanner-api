@@ -1,6 +1,11 @@
 package containerscan
 
+import "github.com/armosec/armoapi-go/armotypes"
+
 type ElasticContainerVulnerabilityResult struct {
+	Designators armotypes.PortalDesignator `json:"designators"`
+	Context     []armotypes.ArmoContext    `json:"context"`
+
 	WLID              string    `json:"wlid"`
 	ContainerScanID   string    `json:"containersScanID"`
 	Layers            []ESLayer `json:"layers"`
@@ -30,6 +35,9 @@ type SeverityStats struct {
 }
 
 type ElasticContainerScanSeveritySummary struct {
+	Designators armotypes.PortalDesignator `json:"designators"`
+	Context     []armotypes.ArmoContext    `json:"context"`
+
 	SeverityStats
 	CustomerGUID    string `json:"customerGUID"`
 	ContainerScanID string `json:"containersScanID"`
@@ -49,6 +57,9 @@ type ElasticContainerScanSeveritySummary struct {
 
 type ElasticContainerScanSummaryResult struct {
 	SeverityStats
+	Designators armotypes.PortalDesignator `json:"designators"`
+	Context     []armotypes.ArmoContext    `json:"context"`
+
 	CustomerGUID    string `json:"customerGUID"`
 	ContainerScanID string `json:"containersScanID"`
 

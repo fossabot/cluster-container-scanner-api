@@ -3,6 +3,7 @@ module github.com/armosec/cluster-container-scanner-api
 go 1.17
 
 require (
+	github.com/armosec/armoapi-go v0.0.31
 	github.com/armosec/utils-k8s-go v0.0.2
 	github.com/francoispqt/gojay v1.2.13
 )
@@ -17,7 +18,7 @@ require (
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
-	golang.org/x/net v0.0.0-20210520170846-37e1c6afe023 // indirect
+	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
