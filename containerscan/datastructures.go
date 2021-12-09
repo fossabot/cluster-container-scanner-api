@@ -29,7 +29,7 @@ var KnownSeverities = map[string]bool{
 
 func CalculateFixed(Fixes []FixedIn) int {
 	for _, fix := range Fixes {
-		if fix.Version != "None" && fix.Name != "not-fixed" {
+		if fix.Version != "None" || fix.Name == "fixed" {
 			return 1
 		}
 	}
