@@ -26,7 +26,7 @@ func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
 	if sumObj.ImgTag != "nginx:1.18.0" {
 		t.Errorf("sumObj.ImgTag = %v", sumObj.ImgTag)
 	}
-	if sumObj.Status != "Fail" {
+	if sumObj.Status != "Success" {
 		t.Errorf("sumObj.Status = %v", sumObj.Status)
 	}
 	if len(sumObj.ListOfDangerousArtifcats) != 3 {
