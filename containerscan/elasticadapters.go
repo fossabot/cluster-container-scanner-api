@@ -127,12 +127,12 @@ func (scanresult *ScanResultReport) Summarize() *ElasticContainerScanSummaryResu
 	}
 	summary.Status = "Success"
 
-	if criticalStats, hasCritical := severitiesStats[CriticalSeverity]; hasCritical && criticalStats.TotalCount > 0 {
-		summary.Status = "Fail"
-	}
-	if highStats, hasHigh := severitiesStats[HighSeverity]; hasHigh && highStats.RelevantCount > 0 {
-		summary.Status = "Fail"
-	}
+	// if criticalStats, hasCritical := severitiesStats[CriticalSeverity]; hasCritical && criticalStats.TotalCount > 0 {
+	// 	summary.Status = "Fail"
+	// }
+	// if highStats, hasHigh := severitiesStats[HighSeverity]; hasHigh && highStats.RelevantCount > 0 {
+	// 	summary.Status = "Fail"
+	// }
 
 	for sever := range severitiesStats {
 		summary.SeveritiesStats = append(summary.SeveritiesStats, severitiesStats[sever])
