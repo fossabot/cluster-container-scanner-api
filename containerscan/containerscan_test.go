@@ -88,3 +88,20 @@ func TestCalculateFixed(t *testing.T) {
 		t.Errorf("wrong fix status: %v", res)
 	}
 }
+
+func TestIsRCE(t *testing.T) {
+	ds := Vulnerability{}
+
+	ds.Description = "Online Railway Reservation System 1.0 - Remote Code Execution (RCE) (Unauthenticated)"
+	if true != ds.IsRCE() {
+		t.Errorf("IsRCE failed")
+	}
+	ds.Description = "Gerapy 0.9.7 - Remote Code Execution (RCE) (Authenticated)"
+	if true != ds.IsRCE() {
+		t.Errorf("IsRCE failed")
+	}
+	ds.Description = "FORCEHENEW"
+	if false != ds.IsRCE() {
+		t.Errorf("IsRCE failed")
+	}
+}
