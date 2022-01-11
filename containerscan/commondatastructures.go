@@ -2,7 +2,7 @@ package containerscan
 
 import "github.com/armosec/armoapi-go/armotypes"
 
-type ElasticContainerVulnerabilityResult struct {
+type CommonContainerVulnerabilityResult struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
 
@@ -34,7 +34,7 @@ type SeverityStats struct {
 	HealthStatus                 string `json:"healthStatus"`
 }
 
-type ElasticContainerScanSeveritySummary struct {
+type CommonContainerScanSeveritySummary struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
 
@@ -55,7 +55,7 @@ type ElasticContainerScanSeveritySummary struct {
 	DayDate         string `json:"dayDate"`
 }
 
-type ElasticContainerScanSummaryResult struct {
+type CommonContainerScanSummaryResult struct {
 	SeverityStats
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
@@ -84,6 +84,6 @@ type ElasticContainerScanSummaryResult struct {
 	Version string `json:"version"`
 }
 
-func (summary *ElasticContainerScanSummaryResult) Validate() bool {
+func (summary *CommonContainerScanSummaryResult) Validate() bool {
 	return summary.CustomerGUID != "" && summary.ContainerScanID != "" && (summary.ImgTag != "" || summary.ImgHash != "") && summary.Timestamp > 0
 }

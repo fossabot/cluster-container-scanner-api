@@ -6,8 +6,8 @@ import (
 )
 
 // ToFlatVulnerabilities - returnsgit p
-func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerVulnerabilityResult {
-	vuls := make([]*ElasticContainerVulnerabilityResult, 0)
+func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVulnerabilityResult {
+	vuls := make([]*CommonContainerVulnerabilityResult, 0)
 	vul2indx := make(map[string]int)
 	scanID := scanresult.AsFNVHash()
 	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
@@ -18,7 +18,7 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerV
 				vuls[indx].Layers = append(vuls[indx].Layers, esLayer)
 				continue
 			}
-			result := &ElasticContainerVulnerabilityResult{WLID: scanresult.WLID,
+			result := &CommonContainerVulnerabilityResult{WLID: scanresult.WLID,
 				Timestamp:   scanresult.Timestamp,
 				Designators: *designatorsObj,
 				Context:     ctxList}
@@ -54,9 +54,9 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*ElasticContainerV
 	return vuls
 }
 
-func (scanresult *ScanResultReport) Summarize() *ElasticContainerScanSummaryResult {
+func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResult {
 	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
-	summary := &ElasticContainerScanSummaryResult{
+	summary := &CommonContainerScanSummaryResult{
 		Designators:              *designatorsObj,
 		Context:                  ctxList,
 		CustomerGUID:             scanresult.CustomerGUID,
