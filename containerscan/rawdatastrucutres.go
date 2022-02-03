@@ -41,6 +41,7 @@ type Vulnerability struct {
 	Link               string                `json:"link"`
 	Description        string                `json:"description"`
 	Severity           string                `json:"severity"`
+	SeverityScore      float32               `json:"severityScore"`
 	Metadata           interface{}           `json:"metadata"`
 	Fixes              VulFixes              `json:"fixedIn"`
 	Relevancy          string                `json:"relevant"` // use the related enum

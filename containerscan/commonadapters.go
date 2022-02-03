@@ -5,6 +5,15 @@ import (
 	cautils "github.com/armosec/utils-k8s-go/armometadata"
 )
 
+var SeverityStr2Score = map[string]float32{
+	"Unknown":    -1,
+	"Negligible": 1,
+	"Low":        2,
+	"Medium":     3,
+	"High":       4,
+	"Critical":   5,
+}
+
 // ToFlatVulnerabilities - returnsgit p
 func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVulnerabilityResult {
 	vuls := make([]*CommonContainerVulnerabilityResult, 0)
@@ -23,6 +32,7 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVu
 				Designators: *designatorsObj,
 				Context:     ctxList}
 
+			vul.SeverityScore = SeverityStr2Score[vul.Severity]
 			result.Vulnerability = vul
 			result.Layers = make([]ESLayer, 0)
 			result.Layers = append(result.Layers, esLayer)
