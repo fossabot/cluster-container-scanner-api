@@ -5,13 +5,13 @@ import (
 	cautils "github.com/armosec/utils-k8s-go/armometadata"
 )
 
-var SeverityStr2Score = map[string]float32{
+var SeverityStr2Score = map[string]int{
 	"Unknown":    -1,
-	"Negligible": 1,
-	"Low":        2,
-	"Medium":     3,
-	"High":       4,
-	"Critical":   5,
+	"Negligible": 100,
+	"Low":        200,
+	"Medium":     300,
+	"High":       400,
+	"Critical":   500,
 }
 
 // ToFlatVulnerabilities - returnsgit p
