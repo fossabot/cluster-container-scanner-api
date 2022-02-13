@@ -57,11 +57,11 @@ type CommonContainerScanSeveritySummary struct {
 
 type CommonContainerScanSummaryResult struct {
 	SeverityStats
-	Designators armotypes.PortalDesignator `json:"designators"`
-	Context     []armotypes.ArmoContext    `json:"context"`
-
-	CustomerGUID    string `json:"customerGUID"`
-	ContainerScanID string `json:"containersScanID"`
+	Designators     armotypes.PortalDesignator `json:"designators"`
+	Context         []armotypes.ArmoContext    `json:"context"`
+	JobIDs          []string                   `json:"jobIDs"`
+	CustomerGUID    string                     `json:"customerGUID"`
+	ContainerScanID string                     `json:"containersScanID"`
 
 	Timestamp     int64    `json:"timestamp"`
 	WLID          string   `json:"wlid"`
