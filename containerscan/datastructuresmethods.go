@@ -1,6 +1,8 @@
 package containerscan
 
 import (
+	"fmt"
+	"hash/fnv"
 	"regexp"
 	"strings"
 
@@ -25,9 +27,17 @@ func (layer *ScanResultLayer) GetPackagesNames() []string {
 	return pkgsNames
 }
 
+func generateWorkloadHash(context map[string]string) string {
+	strForHash := context["cluster"] + context["nameapce"] + context["kind"] + context["name"] + context["containerName"]
+	hasher := fnv.New64a()
+	hasher.Write([]byte(strForHash))
+	return fmt.Sprintf("%v", hasher.Sum64())
+}
+
 func (scanresult *ScanResultReport) GetDesignatorsNContext() (*armotypes.PortalDesignator, []armotypes.ArmoContext) {
 	designatorsObj := armotypes.AttributesDesignatorsFromWLID(scanresult.WLID)
 	designatorsObj.Attributes["containerName"] = scanresult.ContainerName
+	designatorsObj.Attributes["workloadHash"] = generateWorkloadHash(designatorsObj.Attributes)
 	designatorsObj.Attributes["customerGUID"] = scanresult.CustomerGUID
 	contextObj := armotypes.DesignatorToArmoContext(designatorsObj, "designators")
 	return designatorsObj, contextObj

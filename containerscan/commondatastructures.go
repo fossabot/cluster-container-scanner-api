@@ -10,6 +10,7 @@ type CommonContainerVulnerabilityResult struct {
 	ContainerScanID   string    `json:"containersScanID"`
 	Layers            []ESLayer `json:"layers"`
 	Timestamp         int64     `json:"timestamp"`
+	IsLastScan        int       `json:"isLastScan"`
 	IsFixed           int       `json:"isFixed"`
 	IntroducedInLayer string    `json:"layerHash"`
 	RelevantLinks     []string  `json:"links"` // shitty SE practice

@@ -30,7 +30,9 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVu
 			result := &CommonContainerVulnerabilityResult{WLID: scanresult.WLID,
 				Timestamp:   scanresult.Timestamp,
 				Designators: *designatorsObj,
-				Context:     ctxList}
+				Context:     ctxList,
+				IsLastScan:  1,
+			}
 
 			vul.SeverityScore = SeverityStr2Score[vul.Severity]
 			result.Vulnerability = vul
