@@ -38,6 +38,7 @@ type SeverityStats struct {
 type CommonContainerScanSeveritySummary struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
+	JobIDs      []string                   `json:"jobIDs"`
 
 	SeverityStats
 	CustomerGUID    string `json:"customerGUID"`
