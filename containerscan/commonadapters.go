@@ -6,7 +6,7 @@ import (
 )
 
 var SeverityStr2Score = map[string]int{
-	"Unknown":    -1,
+	"Unknown":    1,
 	"Negligible": 100,
 	"Low":        200,
 	"Medium":     300,
