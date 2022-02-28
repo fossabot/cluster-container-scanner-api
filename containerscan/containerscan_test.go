@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/francoispqt/gojay"
 )
@@ -103,5 +104,42 @@ func TestIsRCE(t *testing.T) {
 	ds.Description = "FORCEHENEW"
 	if false != ds.IsRCE() {
 		t.Errorf("IsRCE failed")
+	}
+}
+
+func TestReportValidate(t *testing.T) {
+	scanresult := &ScanResultReport{}
+
+	if scanresult.Validate() {
+		t.Error("empty scan passed validation")
+	}
+	scanresult.Timestamp = time.Now().Unix()
+	scanresult.ImgHash = "fsdfsdf"
+	scanresult.ImgTag = "yuy43434"
+	scanresult.CustomerGUID = "<MY_GUID>"
+	if scanresult.Validate() {
+		t.Error("invalid customer guid passed validation")
+	}
+	scanresult.CustomerGUID = ""
+	if scanresult.Validate() {
+		t.Error("empty CustomerGUID passed validation")
+	}
+	scanresult.ImgHash = ""
+	scanresult.ImgTag = ""
+	scanresult.CustomerGUID = "8c338c97-383e-4083-a42f-d9b4e0448b13"
+	if scanresult.Validate() {
+		t.Error("empty scan passed validation")
+	}
+	scanresult.Timestamp = 0
+	scanresult.ImgHash = "fsdfsdf"
+	scanresult.ImgTag = "yuy43434"
+	if scanresult.Validate() {
+		t.Error("empty timestamp passed validation")
+	}
+	scanresult.Timestamp = time.Now().Unix()
+	scanresult.ImgHash = "fsdfsdf"
+	scanresult.ImgTag = "yuy43434"
+	if !scanresult.Validate() {
+		t.Error("valid timestamp failed the validation")
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/armosec/armoapi-go/armotypes"
+	"github.com/google/uuid"
 )
 
 func (layer *ScanResultLayer) GetFilesByPackage(pkgname string) (files *PkgFiles) {
@@ -35,6 +36,10 @@ func (scanresult *ScanResultReport) GetDesignatorsNContext() (*armotypes.PortalD
 
 func (scanresult *ScanResultReport) Validate() bool {
 	if scanresult.CustomerGUID == "" || (scanresult.ImgHash == "" && scanresult.ImgTag == "") || scanresult.Timestamp <= 0 {
+		return false
+	}
+
+	if _, err := uuid.Parse(scanresult.CustomerGUID); err != nil {
 		return false
 	}
 
