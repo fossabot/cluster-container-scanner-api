@@ -201,6 +201,8 @@ func (scan *ScanResultLayer) NKeys() int {
 	return 0
 }
 
+//-----------------------
+
 //---------------------SCAN RESULT--------------------------------------------------------------------------
 
 // type ScanResultReport struct {

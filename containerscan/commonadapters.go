@@ -5,6 +5,15 @@ import (
 	cautils "github.com/armosec/utils-k8s-go/armometadata"
 )
 
+var SeverityStr2Score = map[string]int{
+	"Unknown":    1,
+	"Negligible": 100,
+	"Low":        200,
+	"Medium":     300,
+	"High":       400,
+	"Critical":   500,
+}
+
 // ToFlatVulnerabilities - returnsgit p
 func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVulnerabilityResult {
 	vuls := make([]*CommonContainerVulnerabilityResult, 0)
@@ -21,8 +30,11 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVu
 			result := &CommonContainerVulnerabilityResult{WLID: scanresult.WLID,
 				Timestamp:   scanresult.Timestamp,
 				Designators: *designatorsObj,
-				Context:     ctxList}
+				Context:     ctxList,
+				IsLastScan:  1,
+			}
 
+			vul.SeverityScore = SeverityStr2Score[vul.Severity]
 			result.Vulnerability = vul
 			result.Layers = make([]ESLayer, 0)
 			result.Layers = append(result.Layers, esLayer)
@@ -67,6 +79,7 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 		ContainerName:            scanresult.ContainerName,
 		ContainerScanID:          scanresult.AsFNVHash(),
 		ListOfDangerousArtifcats: scanresult.ListOfDangerousArtifcats,
+		JobIDs:                   scanresult.Session.JobIDs,
 	}
 
 	summary.Cluster = designatorsObj.Attributes[armotypes.AttributeCluster]

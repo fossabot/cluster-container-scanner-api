@@ -10,6 +10,7 @@ type CommonContainerVulnerabilityResult struct {
 	ContainerScanID   string    `json:"containersScanID"`
 	Layers            []ESLayer `json:"layers"`
 	Timestamp         int64     `json:"timestamp"`
+	IsLastScan        int       `json:"isLastScan"`
 	IsFixed           int       `json:"isFixed"`
 	IntroducedInLayer string    `json:"layerHash"`
 	RelevantLinks     []string  `json:"links"` // shitty SE practice
@@ -37,6 +38,7 @@ type SeverityStats struct {
 type CommonContainerScanSeveritySummary struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
+	JobIDs      []string                   `json:"jobIDs"`
 
 	SeverityStats
 	CustomerGUID    string `json:"customerGUID"`
@@ -57,11 +59,11 @@ type CommonContainerScanSeveritySummary struct {
 
 type CommonContainerScanSummaryResult struct {
 	SeverityStats
-	Designators armotypes.PortalDesignator `json:"designators"`
-	Context     []armotypes.ArmoContext    `json:"context"`
-
-	CustomerGUID    string `json:"customerGUID"`
-	ContainerScanID string `json:"containersScanID"`
+	Designators     armotypes.PortalDesignator `json:"designators"`
+	Context         []armotypes.ArmoContext    `json:"context"`
+	JobIDs          []string                   `json:"jobIDs"`
+	CustomerGUID    string                     `json:"customerGUID"`
+	ContainerScanID string                     `json:"containersScanID"`
 
 	Timestamp     int64    `json:"timestamp"`
 	WLID          string   `json:"wlid"`
