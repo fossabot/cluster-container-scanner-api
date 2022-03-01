@@ -5,21 +5,23 @@ import (
 	"hash/fnv"
 
 	"github.com/armosec/armoapi-go/apis"
+	"github.com/armosec/armoapi-go/armotypes"
 )
 
 //!!!!!!!!!!!!EVERY CHANGE IN THESE STRUCTURES => CHANGE gojayunmarshaller ASWELL!!!!!!!!!!!!!!!!!!!!!!!!
 
 // ScanResultReport - the report given from scanner to event receiver
 type ScanResultReport struct {
-	CustomerGUID             string            `json:"customerGUID"`
-	ImgTag                   string            `json:"imageTag"`
-	ImgHash                  string            `json:"imageHash"`
-	WLID                     string            `json:"wlid"`
-	ContainerName            string            `json:"containerName"`
-	Timestamp                int64             `json:"timestamp"`
-	Layers                   LayersList        `json:"layers"`
-	ListOfDangerousArtifcats []string          `json:"listOfDangerousArtifcats"`
-	Session                  apis.SessionChain `json:"session,omitempty"`
+	Designators              armotypes.PortalDesignator `json:"designators"`
+	CustomerGUID             string                     `json:"customerGUID"`
+	ImgTag                   string                     `json:"imageTag"`
+	ImgHash                  string                     `json:"imageHash"`
+	WLID                     string                     `json:"wlid"`
+	ContainerName            string                     `json:"containerName"`
+	Timestamp                int64                      `json:"timestamp"`
+	Layers                   LayersList                 `json:"layers"`
+	ListOfDangerousArtifcats []string                   `json:"listOfDangerousArtifcats"`
+	Session                  apis.SessionChain          `json:"session,omitempty"`
 }
 
 // ScanResultLayer - represents a single layer from container scan result
