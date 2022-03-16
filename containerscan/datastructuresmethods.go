@@ -40,6 +40,9 @@ func (scanresult *ScanResultReport) GetDesignatorsNContext() (*armotypes.PortalD
 	designatorsObj.Attributes["containerName"] = scanresult.ContainerName
 	designatorsObj.Attributes["workloadHash"] = generateWorkloadHash(designatorsObj.Attributes)
 	designatorsObj.Attributes["customerGUID"] = scanresult.CustomerGUID
+	if val, ok := scanresult.Designators.Attributes["registryName"]; ok {
+		designatorsObj.Attributes["registryName"] = val
+	}
 	contextObj := armotypes.DesignatorToArmoContext(designatorsObj, "designators")
 	return designatorsObj, contextObj
 }
