@@ -14,6 +14,13 @@ var SeverityStr2Score = map[string]int{
 	"Critical":   500,
 }
 
+func (longVul *Vulnerability) ToShortVulnerabilityResult() *ShortVulnerabilityResult {
+	ret := &ShortVulnerabilityResult{
+		Name: longVul.Name,
+	}
+	return ret
+}
+
 // ToFlatVulnerabilities - returnsgit p
 func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVulnerabilityResult {
 	vuls := make([]*CommonContainerVulnerabilityResult, 0)
@@ -95,6 +102,7 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 
 	severitiesStats := map[string]SeverityStats{}
 
+	vulnsList := make([]ShortVulnerabilityResult, 0)
 	uniqueVulsMap := make(map[string]bool)
 	for _, layer := range scanresult.Layers {
 		summary.PackagesName = append(summary.PackagesName, (layer.GetPackagesNames())...)
@@ -103,6 +111,7 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 				continue
 			}
 			uniqueVulsMap[vul.Name] = true
+			vulnsList = append(vulnsList, *(vul.ToShortVulnerabilityResult()))
 
 			// TODO: maybe add all severities just to have a placeholders
 			if !KnownSeverities[vul.Severity] {
@@ -139,6 +148,7 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 		}
 	}
 	summary.Status = "Success"
+	summary.Vulnerabilities = vulnsList
 
 	// if criticalStats, hasCritical := severitiesStats[CriticalSeverity]; hasCritical && criticalStats.TotalCount > 0 {
 	// 	summary.Status = "Fail"

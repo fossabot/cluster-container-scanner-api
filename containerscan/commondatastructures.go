@@ -35,6 +35,10 @@ type SeverityStats struct {
 	HealthStatus                 string `json:"healthStatus"`
 }
 
+type ShortVulnerabilityResult struct {
+	Name string `json:"name"`
+}
+
 type CommonContainerScanSeveritySummary struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
@@ -84,6 +88,8 @@ type CommonContainerScanSummaryResult struct {
 	SeveritiesStats []SeverityStats `json:"severitiesStats"`
 
 	Version string `json:"version"`
+
+	Vulnerabilities []ShortVulnerabilityResult `json:"vulnerabilities"`
 }
 
 func (summary *CommonContainerScanSummaryResult) Validate() bool {

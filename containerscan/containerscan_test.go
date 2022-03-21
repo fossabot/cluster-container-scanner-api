@@ -143,3 +143,23 @@ func TestReportValidate(t *testing.T) {
 		t.Error("valid timestamp failed the validation")
 	}
 }
+
+func TestVulnerabilityToShort(t *testing.T) {
+	vul := Vulnerability{
+		Name:               "name",
+		ImgHash:            "imageHash",
+		ImgTag:             "imageTag",
+		RelatedPackageName: "packageName",
+		PackageVersion:     "packageVersion",
+		Link:               "link",
+		Description:        "description",
+		Severity:           "severity",
+		SeverityScore:      5,
+		Metadata:           "metadata",
+		Relevancy:          "relevant",
+	}
+	short := vul.ToShortVulnerabilityResult()
+	if short.Name != vul.Name {
+		t.Errorf("ToShortVulnerabilityResult failed")
+	}
+}
