@@ -6,14 +6,15 @@ type CommonContainerVulnerabilityResult struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
 	Context     []armotypes.ArmoContext    `json:"context"`
 
-	WLID              string    `json:"wlid"`
-	ContainerScanID   string    `json:"containersScanID"`
-	Layers            []ESLayer `json:"layers"`
-	Timestamp         int64     `json:"timestamp"`
-	IsLastScan        int       `json:"isLastScan"`
-	IsFixed           int       `json:"isFixed"`
-	IntroducedInLayer string    `json:"layerHash"`
-	RelevantLinks     []string  `json:"links"` // shitty SE practice
+	WLID              string                                   `json:"wlid"`
+	ContainerScanID   string                                   `json:"containersScanID"`
+	Layers            []ESLayer                                `json:"layers"`
+	Timestamp         int64                                    `json:"timestamp"`
+	IsLastScan        int                                      `json:"isLastScan"`
+	IsFixed           int                                      `json:"isFixed"`
+	IntroducedInLayer string                                   `json:"layerHash"`
+	RelevantLinks     []string                                 `json:"links"`                       // shitty SE practice
+	RelatedExceptions []armotypes.VulnerabilityExceptionPolicy `json:"relatedExceptions,omitempty"` // configured in portal
 
 	Vulnerability `json:",inline"`
 }
