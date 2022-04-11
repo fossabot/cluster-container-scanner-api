@@ -100,18 +100,34 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 
 	summary.PackagesName = make([]string, 0)
 
-	severitiesStats := map[string]SeverityStats{}
+	actualSeveritiesStats := map[string]SeverityStats{}
+	exculdedSeveritiesStats := map[string]SeverityStats{}
 
 	vulnsList := make([]ShortVulnerabilityResult, 0)
 	uniqueVulsMap := make(map[string]bool)
+	uniqueExceptionVulsMap := make(map[string]bool)
 	for _, layer := range scanresult.Layers {
 		summary.PackagesName = append(summary.PackagesName, (layer.GetPackagesNames())...)
 		for _, vul := range layer.Vulnerabilities {
 			if _, isOk := uniqueVulsMap[vul.Name]; isOk {
 				continue
 			}
-			uniqueVulsMap[vul.Name] = true
-			vulnsList = append(vulnsList, *(vul.ToShortVulnerabilityResult()))
+			if _, isOk := uniqueExceptionVulsMap[vul.Name]; isOk {
+				continue
+			}
+			isIgnored := (len(vul.ExceptionApplied) > 0 &&
+				len(vul.ExceptionApplied[0].Actions) > 0 &&
+				vul.ExceptionApplied[0].Actions[0] == armotypes.Ignore)
+
+			severitiesStats := exculdedSeveritiesStats
+			if !isIgnored {
+				summary.TotalCount++
+				uniqueVulsMap[vul.Name] = true
+				vulnsList = append(vulnsList, *(vul.ToShortVulnerabilityResult()))
+				severitiesStats = actualSeveritiesStats
+			} else {
+				uniqueExceptionVulsMap[vul.Name] = true
+			}
 
 			// TODO: maybe add all severities just to have a placeholders
 			if !KnownSeverities[vul.Severity] {
@@ -124,23 +140,22 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 			}
 
 			vulnSeverityStats.TotalCount++
-			summary.TotalCount++
 			isFixed := CalculateFixed(vul.Fixes) > 0
 			if isFixed {
 				vulnSeverityStats.FixAvailableOfTotalCount++
-				summary.FixAvailableOfTotalCount++
+				incrementCounter(&summary.FixAvailableOfTotalCount, true, isIgnored)
 			}
 			isRCE := vul.IsRCE()
 			if isRCE {
 				vulnSeverityStats.RCECount++
-				summary.RCECount++
+				incrementCounter(&summary.RCECount, true, isIgnored)
 			}
 			if vul.Relevancy == Relevant {
 				vulnSeverityStats.RelevantCount++
-				summary.RelevantCount++
+				incrementCounter(&summary.RelevantCount, true, isIgnored)
 				if isFixed {
 					vulnSeverityStats.FixAvailableForRelevantCount++
-					summary.FixAvailableForRelevantCount++
+					incrementCounter(&summary.FixAvailableForRelevantCount, true, isIgnored)
 				}
 
 			}
@@ -157,8 +172,18 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 	// 	summary.Status = "Fail"
 	// }
 
-	for sever := range severitiesStats {
-		summary.SeveritiesStats = append(summary.SeveritiesStats, severitiesStats[sever])
+	for sever := range actualSeveritiesStats {
+		summary.SeveritiesStats = append(summary.SeveritiesStats, actualSeveritiesStats[sever])
+	}
+	for sever := range exculdedSeveritiesStats {
+		summary.ExcludedSeveritiesStats = append(summary.ExcludedSeveritiesStats, exculdedSeveritiesStats[sever])
 	}
 	return summary
+}
+
+func incrementCounter(counter *int64, isGlobal, isIgnored bool) {
+	if isGlobal && isIgnored {
+		return
+	}
+	(*counter)++
 }

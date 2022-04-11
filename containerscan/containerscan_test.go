@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/armosec/armoapi-go/armotypes"
 	"github.com/francoispqt/gojay"
 )
 
@@ -33,6 +34,79 @@ func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
 	if len(sumObj.ListOfDangerousArtifcats) != 3 {
 		t.Errorf("sumObj.ListOfDangerousArtifcats = %v", sumObj.ListOfDangerousArtifcats)
 	}
+}
+
+func TestExceptions(t *testing.T) {
+	rhs := &ScanResultReport{}
+	er := gojay.NewDecoder(strings.NewReader(nginxScanJSON)).DecodeObject(rhs)
+	if er != nil {
+		t.Errorf("decode failed due to: %v", er.Error())
+	}
+	regularSum := rhs.Summarize()
+	exception := armotypes.MockVulnerabilityException()
+	rhs.Layers[0].Vulnerabilities[0].ExceptionApplied = append(rhs.Layers[0].Vulnerabilities[0].ExceptionApplied, *exception)
+	rhs.Layers[0].Vulnerabilities[1].ExceptionApplied = append(rhs.Layers[0].Vulnerabilities[1].ExceptionApplied, *exception)
+
+	sumObj := rhs.Summarize()
+	if len(sumObj.ExcludedSeveritiesStats) != 1 {
+		t.Errorf("len(sumObj.ExcludedSeveritiesStats) = %v", len(sumObj.ExcludedSeveritiesStats))
+	}
+	excludedStats := sumObj.ExcludedSeveritiesStats[0]
+
+	// Alone
+	if excludedStats.Severity != "Medium" {
+		t.Errorf("excludedStats.Severity = %v", excludedStats.Severity)
+	}
+	if excludedStats.TotalCount != 2 {
+		t.Errorf("excludedStats.TotalCount = %v", excludedStats.TotalCount)
+	}
+	if excludedStats.FixAvailableOfTotalCount != 2 {
+		t.Errorf("excludedStats.FixAvailableOfTotalCount = %v", excludedStats.FixAvailableOfTotalCount)
+	}
+	if excludedStats.RelevantCount != 0 {
+		t.Errorf("excludedStats.RelevantCount = %v", excludedStats.RelevantCount)
+	}
+	if excludedStats.FixAvailableForRelevantCount != 0 {
+		t.Errorf("excludedStats.FixAvailableForRelevantCount = %v", excludedStats.FixAvailableForRelevantCount)
+	}
+	if excludedStats.RCECount != 1 {
+		t.Errorf("excludedStats.RCECount = %v", excludedStats.RCECount)
+	}
+	if excludedStats.UrgentCount != 0 {
+		t.Errorf("excludedStats.UrgentCount = %v", excludedStats.UrgentCount)
+	}
+	if excludedStats.NeglectedCount != 0 {
+		t.Errorf("excludedStats.NeglectedCount = %v", excludedStats.NeglectedCount)
+	}
+
+	// With-exceptions-summary VS regular
+	if regularSum.TotalCount != (sumObj.TotalCount + excludedStats.TotalCount) {
+		t.Errorf("sumObj.TotalCount = %v", sumObj.TotalCount)
+	}
+	if regularSum.FixAvailableOfTotalCount != (sumObj.FixAvailableOfTotalCount + excludedStats.FixAvailableOfTotalCount) {
+		t.Errorf("sumObj.FixAvailableOfTotalCount = %v", sumObj.FixAvailableOfTotalCount)
+	}
+	if regularSum.RelevantCount != (sumObj.RelevantCount + excludedStats.RelevantCount) {
+		t.Errorf("sumObj.RelevantCount = %v", sumObj.RelevantCount)
+	}
+	if regularSum.FixAvailableForRelevantCount != (sumObj.FixAvailableForRelevantCount + excludedStats.FixAvailableForRelevantCount) {
+		t.Errorf("sumObj.FixAvailableForRelevantCoun = %v", sumObj.FixAvailableForRelevantCount)
+	}
+	if regularSum.RCECount != (sumObj.RCECount + excludedStats.RCECount) {
+		t.Errorf("sumObj.RCECount = %v", sumObj.RCECount)
+	}
+	if regularSum.UrgentCount != (sumObj.UrgentCount + excludedStats.UrgentCount) {
+		t.Errorf("sumObj.UrgentCount = %v", sumObj.UrgentCount)
+	}
+	if regularSum.NeglectedCount != (sumObj.NeglectedCount + excludedStats.NeglectedCount) {
+		t.Errorf("sumObj.NeglectedCount = %v", sumObj.NeglectedCount)
+	}
+	// if regularSum.HealthStatus != (sumObj.HealthStatus + excludedStats.HealthStatus) {
+	// 	t.Errorf("sumObj.HealthStatus = %v", sumObj.HealthStatus)
+	// }
+	// if excludedStats.HealthStatus                 != val {
+	// 	t.Errorf("excludedStats.HealthStatus = %v", excludedStats.HealthStatus)
+	// }
 }
 
 func TestUnmarshalScanReport(t *testing.T) {

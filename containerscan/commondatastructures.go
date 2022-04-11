@@ -86,7 +86,8 @@ type CommonContainerScanSummaryResult struct {
 	Registry     string `json:"registry"`
 	VersionImage string `json:"versionImage"`
 
-	SeveritiesStats []SeverityStats `json:"severitiesStats"`
+	SeveritiesStats         []SeverityStats `json:"severitiesStats"`
+	ExcludedSeveritiesStats []SeverityStats `json:"excludedSeveritiesStats,omitempty"`
 
 	Version string `json:"version"`
 
