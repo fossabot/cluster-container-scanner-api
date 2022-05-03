@@ -10,6 +10,7 @@ import (
 
 	"github.com/armosec/armoapi-go/armotypes"
 	"github.com/francoispqt/gojay"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
@@ -110,7 +111,7 @@ func TestExceptions(t *testing.T) {
 }
 
 func TestUnmarshalScanReport(t *testing.T) {
-	ds := GenerateContainerScanReportMock()
+	ds := GenerateContainerScanReportMock(GenerateVulnerability)
 	str1 := ds.AsFNVHash()
 	rhs := &ScanResultReport{}
 
@@ -127,6 +128,34 @@ func TestUnmarshalScanReport(t *testing.T) {
 	}
 }
 
+func TestRCEFixCount(t *testing.T) {
+	// RCE and fixed
+	ds := GenerateContainerScanReportMock(GenerateVulnerabilityRCEAndFixed)
+	summary := ds.Summarize()
+	assert.Equal(t, summary.RCECount, summary.FixAvailableOfTotalCount)
+	assert.Equal(t, summary.RCEFixCount, summary.RCECount)
+
+	// RCE not fixed
+	ds = GenerateContainerScanReportMock(GenerateVulnerabilityRCENotFixed)
+	summary = ds.Summarize()
+	assert.NotEqual(t, summary.RCECount, int64(0))
+	assert.Equal(t, summary.FixAvailableOfTotalCount, int64(0))
+	assert.Equal(t, summary.RCEFixCount, int64(0))
+
+	//No RCE and fixed
+	ds = GenerateContainerScanReportMock(GenerateVulnerabilityNoRCEAndFixed)
+	summary = ds.Summarize()
+	assert.Equal(t, summary.RCECount, int64(0))
+	assert.NotEqual(t, summary.FixAvailableOfTotalCount, int64(0))
+	assert.Equal(t, summary.RCEFixCount, int64(0))
+
+	//No RCE and no fix
+	ds = GenerateContainerScanReportMock(GenerateVulnerabilityNoRCENoFixed)
+	summary = ds.Summarize()
+	assert.Equal(t, summary.FixAvailableOfTotalCount, int64(0))
+	assert.Equal(t, summary.RCEFixCount, int64(0))
+	assert.Equal(t, summary.RCECount, int64(0))
+}
 func TestUnmarshalScanReport1(t *testing.T) {
 	ds := Vulnerability{}
 	if err := GenerateVulnerability(&ds); err != nil {
@@ -135,7 +164,7 @@ func TestUnmarshalScanReport1(t *testing.T) {
 }
 
 func TestGetByPkgNameSuccess(t *testing.T) {
-	ds := GenerateContainerScanReportMock()
+	ds := GenerateContainerScanReportMock(GenerateVulnerability)
 	a := ds.Layers[0].GetFilesByPackage("coreutils")
 	if a != nil {
 
@@ -145,7 +174,7 @@ func TestGetByPkgNameSuccess(t *testing.T) {
 }
 
 func TestGetByPkgNameMissing(t *testing.T) {
-	ds := GenerateContainerScanReportMock()
+	ds := GenerateContainerScanReportMock(GenerateVulnerability)
 	a := ds.Layers[0].GetFilesByPackage("s")
 	if a != nil && len(*a) > 0 {
 		t.Errorf("expected - no such package should be in that layer %v\n\n; found - %v", ds, a)

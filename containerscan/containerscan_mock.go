@@ -9,7 +9,7 @@ import (
 )
 
 // GenerateContainerScanReportMock - generate a scan result
-func GenerateContainerScanReportMock() ScanResultReport {
+func GenerateContainerScanReportMock(vulnGenerator func(*Vulnerability) error) ScanResultReport {
 	ds := ScanResultReport{
 		WLID:         "wlid://cluster-k8s-geriatrix-k8s-demo3/namespace-whisky-app/deployment-whisky4all-shipping",
 		CustomerGUID: "1231bcb1-49ce-4a67-bdd3-5da7a393ae08",
@@ -20,7 +20,7 @@ func GenerateContainerScanReportMock() ScanResultReport {
 
 	ds.Layers = make(LayersList, 0)
 	layer := ScanResultLayer{}
-	GenerateContainerScanLayer(&layer)
+	GenerateContainerScanLayer(&layer, vulnGenerator)
 	ds.Layers = append(ds.Layers, layer)
 	return ds
 }
@@ -56,7 +56,7 @@ func randSeq(n int, bank []rune) string {
 }
 
 // GenerateContainerScanLayer - generate a layer with random vuls
-func GenerateContainerScanLayer(layer *ScanResultLayer) {
+func GenerateContainerScanLayer(layer *ScanResultLayer, generateVuln func(*Vulnerability) error) {
 	layer.LayerHash = randSeq(32, hash)
 	layer.Vulnerabilities = make(VulnerabilitiesList, 0)
 	layer.Packages = make(LinuxPkgs, 0)
@@ -64,7 +64,7 @@ func GenerateContainerScanLayer(layer *ScanResultLayer) {
 
 	for i := 0; i < vuls; i++ {
 		v := Vulnerability{}
-		GenerateVulnerability(&v)
+		generateVuln(&v)
 		layer.Vulnerabilities = append(layer.Vulnerabilities, v)
 	}
 
@@ -87,4 +87,53 @@ func GenerateVulnerability(v *Vulnerability) error {
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 
+}
+
+func GenerateVulnerabilityRCEAndFixed(v *Vulnerability) error {
+	baseVul := " { \"name\": \"CVE-2014-9471\", \"imageTag\": \"debian:8\", \"link\": \"https://security-tracker.debian.org/tracker/CVE-2014-9471\", \"description\": \"The parse_datetime function in GNU coreutils allows remote attackers to cause a denial of service (crash) or possibly execute arbitrary code via a crafted date string, as demonstrated by the sdf\", \"severity\": \"Low\", \"metadata\": { \"NVD\": { \"CVSSv2\": { \"Score\": 7.5, \"Vectors\": \"AV:N/AC:L/Au:N/C:P/I:P\" } } }, \"fixedIn\": [ { \"name\": \"coreutils\", \"imageTag\": \"debian:8\", \"version\": \"8.23-1\" } ] }"
+	b := []byte(baseVul)
+	r := bytes.NewReader(b)
+	er := gojay.NewDecoder(r).DecodeObject(v)
+	v.RelatedPackageName = "coreutils"
+	v.Severity = HighSeverity
+	v.Relevancy = Irelevant
+	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
+	return er
+
+}
+
+func GenerateVulnerabilityRCENotFixed(v *Vulnerability) error {
+	baseVul := " { \"name\": \"CVE-2014-9471\", \"imageTag\": \"debian:8\", \"link\": \"https://security-tracker.debian.org/tracker/CVE-2014-9471\", \"description\": \"The parse_datetime function in GNU coreutils allows remote attackers to cause a denial of service (crash) or possibly execute arbitrary code via a crafted date string, as demonstrated by the sdf\", \"severity\": \"Low\", \"metadata\": { \"NVD\": { \"CVSSv2\": { \"Score\": 7.5, \"Vectors\": \"AV:N/AC:L/Au:N/C:P/I:P\" } } }}"
+	b := []byte(baseVul)
+	r := bytes.NewReader(b)
+	er := gojay.NewDecoder(r).DecodeObject(v)
+	v.RelatedPackageName = "coreutils"
+	v.Severity = HighSeverity
+	v.Relevancy = Irelevant
+	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
+	return er
+}
+
+func GenerateVulnerabilityNoRCENoFixed(v *Vulnerability) error {
+	baseVul := " { \"name\": \"CVE-2014-9471\", \"imageTag\": \"debian:8\", \"link\": \"https://security-tracker.debian.org/tracker/CVE-2014-9471\", \"description\": \" bla\", \"severity\": \"Low\", \"metadata\": { \"NVD\": { \"CVSSv2\": { \"Score\": 7.5, \"Vectors\": \"AV:N/AC:L/Au:N/C:P/I:P\" } } }}"
+	b := []byte(baseVul)
+	r := bytes.NewReader(b)
+	er := gojay.NewDecoder(r).DecodeObject(v)
+	v.RelatedPackageName = "coreutils"
+	v.Severity = HighSeverity
+	v.Relevancy = Irelevant
+	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
+	return er
+}
+
+func GenerateVulnerabilityNoRCEAndFixed(v *Vulnerability) error {
+	baseVul := " { \"name\": \"CVE-2014-9471\", \"imageTag\": \"debian:8\", \"link\": \"https://security-tracker.debian.org/tracker/CVE-2014-9471\", \"description\": \"bla\", \"severity\": \"Low\", \"metadata\": { \"NVD\": { \"CVSSv2\": { \"Score\": 7.5, \"Vectors\": \"AV:N/AC:L/Au:N/C:P/I:P\" } } }, \"fixedIn\": [ { \"name\": \"coreutils\", \"imageTag\": \"debian:8\", \"version\": \"8.23-1\" } ] }"
+	b := []byte(baseVul)
+	r := bytes.NewReader(b)
+	er := gojay.NewDecoder(r).DecodeObject(v)
+	v.RelatedPackageName = "coreutils"
+	v.Severity = HighSeverity
+	v.Relevancy = Irelevant
+	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
+	return er
 }

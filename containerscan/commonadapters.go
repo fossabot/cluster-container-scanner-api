@@ -149,6 +149,9 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 			if isRCE {
 				vulnSeverityStats.RCECount++
 				incrementCounter(&summary.RCECount, true, isIgnored)
+				if isFixed {
+					summary.RCEFixCount++
+				}
 			}
 			if vul.Relevancy == Relevant {
 				vulnSeverityStats.RelevantCount++

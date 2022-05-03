@@ -27,6 +27,7 @@ type ESLayer struct {
 type SeverityStats struct {
 	Severity                     string `json:"severity,omitempty"`
 	TotalCount                   int64  `json:"total"`
+	RCEFixCount                  int64  `json:"rceFixCount"`
 	FixAvailableOfTotalCount     int64  `json:"fixedTotal"`
 	RelevantCount                int64  `json:"totalRelevant"`
 	FixAvailableForRelevantCount int64  `json:"fixedRelevant"`
