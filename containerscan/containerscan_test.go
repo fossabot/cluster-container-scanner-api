@@ -133,6 +133,7 @@ func TestRCEFixCount(t *testing.T) {
 	ds := GenerateContainerScanReportMock(GenerateVulnerabilityRCEAndFixed)
 	summary := ds.Summarize()
 	assert.Equal(t, summary.RCECount, summary.FixAvailableOfTotalCount)
+	assert.Equal(t, summary.SeveritiesStats[0].RCEFixCount, summary.RCEFixCount)
 	assert.Equal(t, summary.RCEFixCount, summary.RCECount)
 
 	// RCE not fixed
@@ -140,6 +141,7 @@ func TestRCEFixCount(t *testing.T) {
 	summary = ds.Summarize()
 	assert.NotEqual(t, summary.RCECount, int64(0))
 	assert.Equal(t, summary.FixAvailableOfTotalCount, int64(0))
+	assert.Equal(t, summary.SeveritiesStats[0].RCEFixCount, summary.RCEFixCount)
 	assert.Equal(t, summary.RCEFixCount, int64(0))
 
 	//No RCE and fixed
@@ -147,6 +149,7 @@ func TestRCEFixCount(t *testing.T) {
 	summary = ds.Summarize()
 	assert.Equal(t, summary.RCECount, int64(0))
 	assert.NotEqual(t, summary.FixAvailableOfTotalCount, int64(0))
+	assert.Equal(t, summary.SeveritiesStats[0].RCEFixCount, summary.RCEFixCount)
 	assert.Equal(t, summary.RCEFixCount, int64(0))
 
 	//No RCE and no fix
@@ -154,6 +157,7 @@ func TestRCEFixCount(t *testing.T) {
 	summary = ds.Summarize()
 	assert.Equal(t, summary.FixAvailableOfTotalCount, int64(0))
 	assert.Equal(t, summary.RCEFixCount, int64(0))
+	assert.Equal(t, summary.SeveritiesStats[0].RCEFixCount, summary.RCEFixCount)
 	assert.Equal(t, summary.RCECount, int64(0))
 }
 func TestUnmarshalScanReport1(t *testing.T) {
