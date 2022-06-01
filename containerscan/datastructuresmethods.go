@@ -36,13 +36,19 @@ func generateWorkloadHash(context map[string]string) string {
 }
 
 func (scanresult *ScanResultReport) GetDesignatorsNContext() (*armotypes.PortalDesignator, []armotypes.ArmoContext) {
+
 	designatorsObj := armotypes.AttributesDesignatorsFromWLID(scanresult.WLID)
 	designatorsObj.Attributes["containerName"] = scanresult.ContainerName
 	designatorsObj.Attributes["workloadHash"] = generateWorkloadHash(designatorsObj.Attributes)
 	designatorsObj.Attributes["customerGUID"] = scanresult.CustomerGUID
-	if val, ok := scanresult.Designators.Attributes["registryName"]; ok {
-		designatorsObj.Attributes["registryName"] = val
+
+	//Copy all missing attributes
+	for k := range scanresult.Designators.Attributes {
+		if _, ok := designatorsObj.Attributes[k]; !ok {
+			designatorsObj.Attributes[k] = scanresult.Designators.Attributes[k]
+		}
 	}
+
 	contextObj := armotypes.DesignatorToArmoContext(designatorsObj, "designators")
 	return designatorsObj, contextObj
 }
