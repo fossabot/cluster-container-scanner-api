@@ -13,6 +13,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestImageRegisteryInformation(t *testing.T) {
+	mock := ScanResultReport{Designators: armotypes.PortalDesignator{WLID: "wlid://cluster-testc,namespace-testns/deployment-testname",
+		Attributes: map[string]string{"registryName": "gcr.io/elated-pottery-310110",
+			"project":  "testProject",
+			"chikmook": "chikmook",
+		}}}
+
+	summary := mock.Summarize()
+	assert.Equal(t, summary.Designators.Attributes["registryName"], mock.Designators.Attributes["registryName"], "missing registryName")
+	assert.Equal(t, summary.Designators.Attributes["project"], mock.Designators.Attributes["project"], "missing project")
+	assert.Equal(t, summary.Designators.Attributes["chikmook"], mock.Designators.Attributes["chikmook"], "missing random property")
+
+}
 func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
 	rhs := &ScanResultReport{}
 	er := gojay.NewDecoder(strings.NewReader(nginxScanJSON)).DecodeObject(rhs)
