@@ -74,3 +74,32 @@ func (v *Vulnerability) IsRCE() bool {
 
 	return isRCE || strings.Contains(desc, "remote code execution") || strings.Contains(desc, "remote command execution") || strings.Contains(desc, "arbitrary code") || strings.Contains(desc, "code execution") || strings.Contains(desc, "code injection") || strings.Contains(desc, "command injection") || strings.Contains(desc, "inject arbitrary commands")
 }
+
+func (scanresult *ScanResultReportV1) Validate() bool {
+	if scanresult.CustomerGUID == "" || scanresult.ContainerScanID == "" || scanresult.Timestamp <= 0 {
+		return false
+	}
+
+	if _, err := uuid.Parse(scanresult.CustomerGUID); err != nil {
+		return false
+	}
+	return true
+}
+
+func (scanresult *ScanResultReportV1) GetDesignatorsNContext() (*armotypes.PortalDesignator, []armotypes.ArmoContext) {
+
+	designatorsObj := armotypes.AttributesDesignatorsFromWLID(scanresult.WLID)
+	designatorsObj.Attributes["containerName"] = scanresult.ContainerName
+	designatorsObj.Attributes["workloadHash"] = generateWorkloadHash(designatorsObj.Attributes)
+	designatorsObj.Attributes["customerGUID"] = scanresult.CustomerGUID
+
+	//Copy all missing attributes
+	for k := range scanresult.Designators.Attributes {
+		if _, ok := designatorsObj.Attributes[k]; !ok {
+			designatorsObj.Attributes[k] = scanresult.Designators.Attributes[k]
+		}
+	}
+
+	contextObj := armotypes.DesignatorToArmoContext(designatorsObj, "designators")
+	return designatorsObj, contextObj
+}

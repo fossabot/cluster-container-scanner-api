@@ -246,3 +246,19 @@ func (scan *ScanResultReport) UnmarshalJSONObject(dec *gojay.Decoder, key string
 func (scan *ScanResultReport) NKeys() int {
 	return 0
 }
+
+func (scan *ScanResultReportV1) UnmarshalJSONObject(dec *gojay.Decoder, key string) (err error) {
+	switch key {
+	case "customerGUID":
+		err = dec.String(&(scan.CustomerGUID))
+	case "timestamp":
+		err = dec.Int64(&(scan.Timestamp))
+	case "containersScanID":
+		err = dec.String(&(scan.ContainerScanID))
+	}
+	return err
+}
+
+func (scan *ScanResultReportV1) NKeys() int {
+	return 0
+}

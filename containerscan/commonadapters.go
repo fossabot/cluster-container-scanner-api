@@ -22,8 +22,8 @@ func (longVul *Vulnerability) ToShortVulnerabilityResult() *ShortVulnerabilityRe
 }
 
 // ToFlatVulnerabilities - returnsgit p
-func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVulnerabilityResult {
-	vuls := make([]*CommonContainerVulnerabilityResult, 0)
+func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVulnerabilityResult {
+	vuls := make([]CommonContainerVulnerabilityResult, 0)
 	vul2indx := make(map[string]int)
 	scanID := scanresult.AsFNVHash()
 	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
@@ -34,7 +34,7 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []*CommonContainerVu
 				vuls[indx].Layers = append(vuls[indx].Layers, esLayer)
 				continue
 			}
-			result := &CommonContainerVulnerabilityResult{WLID: scanresult.WLID,
+			result := CommonContainerVulnerabilityResult{WLID: scanresult.WLID,
 				Timestamp:   scanresult.Timestamp,
 				Designators: *designatorsObj,
 				Context:     ctxList,

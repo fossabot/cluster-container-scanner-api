@@ -24,6 +24,20 @@ type ScanResultReport struct {
 	Session                  apis.SessionChain          `json:"session,omitempty"`
 }
 
+//ScanResultReportV1 replaces ScanResultReport
+type ScanResultReportV1 struct {
+	Designators     armotypes.PortalDesignator           `json:"designators"`
+	WLID            string                               `json:"wlid"`
+	ContainerName   string                               `json:"containerName"`
+	CustomerGUID    string                               `json:"customerGUID"`
+	Timestamp       int64                                `json:"timestamp"`
+	ContainerScanID string                               `json:"containersScanID"`
+	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
+	Summery         *CommonContainerScanSummaryResult    `json:"summery,omitempty"`
+	PartNum         int                                  `json:"partNum"`
+	LastPart        bool                                 `json:"lastPart"`
+}
+
 // ScanResultLayer - represents a single layer from container scan result
 type ScanResultLayer struct {
 	LayerHash       string              `json:"layerHash"`
