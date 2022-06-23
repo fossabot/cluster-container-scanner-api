@@ -33,7 +33,7 @@ type ScanResultReportV1 struct {
 	Timestamp       int64                                `json:"timestamp"`
 	ContainerScanID string                               `json:"containersScanID"`
 	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
-	Summery         *CommonContainerScanSummaryResult    `json:"summery,omitempty"`
+	Summary         *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
 	PartNum         int                                  `json:"partNum"`
 	LastPart        bool                                 `json:"lastPart"`
 }
