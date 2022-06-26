@@ -5,6 +5,7 @@ import (
 	"hash/fnv"
 
 	"github.com/armosec/armoapi-go/apis"
+
 	"github.com/armosec/armoapi-go/armotypes"
 )
 
@@ -27,15 +28,11 @@ type ScanResultReport struct {
 //ScanResultReportV1 replaces ScanResultReport
 type ScanResultReportV1 struct {
 	Designators     armotypes.PortalDesignator           `json:"designators"`
-	WLID            string                               `json:"wlid"`
-	ContainerName   string                               `json:"containerName"`
-	CustomerGUID    string                               `json:"customerGUID"`
 	Timestamp       int64                                `json:"timestamp"`
 	ContainerScanID string                               `json:"containersScanID"`
 	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
 	Summary         *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
-	PartNum         int                                  `json:"partNum"`
-	LastPart        bool                                 `json:"lastPart"`
+	PaginationInfo  apis.PaginationMarks                 `json:"paginationInfo"`
 }
 
 // ScanResultLayer - represents a single layer from container scan result
