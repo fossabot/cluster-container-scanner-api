@@ -74,3 +74,15 @@ func (v *Vulnerability) IsRCE() bool {
 
 	return isRCE || strings.Contains(desc, "remote code execution") || strings.Contains(desc, "remote command execution") || strings.Contains(desc, "arbitrary code") || strings.Contains(desc, "code execution") || strings.Contains(desc, "code injection") || strings.Contains(desc, "command injection") || strings.Contains(desc, "inject arbitrary commands")
 }
+
+func (scanresult *ScanResultReportV1) Validate() bool {
+	customerGuid := scanresult.Designators.Attributes[armotypes.AttributeCustomerGUID]
+	if customerGuid == "" || scanresult.ContainerScanID == "" || scanresult.Timestamp <= 0 {
+		return false
+	}
+
+	if _, err := uuid.Parse(customerGuid); err != nil {
+		return false
+	}
+	return true
+}
