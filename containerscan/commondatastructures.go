@@ -1,9 +1,6 @@
 package containerscan
 
-import (
-	"github.com/armosec/armoapi-go/armotypes"
-	"github.com/fxtlabs/date"
-)
+import "github.com/armosec/armoapi-go/armotypes"
 
 type CommonContainerVulnerabilityResult struct {
 	Designators armotypes.PortalDesignator `json:"designators"`
@@ -25,12 +22,8 @@ type CommonContainerVulnerabilityResult struct {
 type ESLayer struct {
 	LayerHash       string `json:"layerHash"`
 	ParentLayerHash string `json:"parentLayerHash"`
-	LayerInfo       *LayerInfo
 }
-type LayerInfo struct {
-	CreatedBy   string
-	CreatedTime *date.Date
-}
+
 type SeverityStats struct {
 	Severity                     string `json:"severity,omitempty"`
 	TotalCount                   int64  `json:"total"`
