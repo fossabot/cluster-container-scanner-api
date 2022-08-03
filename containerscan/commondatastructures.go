@@ -27,10 +27,12 @@ type ESLayer struct {
 	ParentLayerHash string `json:"parentLayerHash"`
 	LayerInfo       *LayerInfo
 }
+
 type LayerInfo struct {
 	CreatedBy   string
 	CreatedTime *date.Date
 }
+
 type SeverityStats struct {
 	Severity                     string `json:"severity,omitempty"`
 	TotalCount                   int64  `json:"total"`
