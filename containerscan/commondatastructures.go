@@ -1,8 +1,9 @@
 package containerscan
 
 import (
+	"time"
+
 	"github.com/armosec/armoapi-go/armotypes"
-	"github.com/fxtlabs/date"
 )
 
 type CommonContainerVulnerabilityResult struct {
@@ -30,7 +31,7 @@ type ESLayer struct {
 
 type LayerInfo struct {
 	CreatedBy   string
-	CreatedTime *date.Date
+	CreatedTime *time.Time
 }
 
 type SeverityStats struct {
