@@ -30,8 +30,8 @@ type ESLayer struct {
 }
 
 type LayerInfo struct {
-	CreatedBy   string     `json:"createdBy"`
-	CreatedTime *time.Time `json:"createdTime"`
+	CreatedBy   string     `json:"createdBy,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 }
 
 type SeverityStats struct {
