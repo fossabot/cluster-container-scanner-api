@@ -26,12 +26,12 @@ type CommonContainerVulnerabilityResult struct {
 type ESLayer struct {
 	LayerHash       string `json:"layerHash"`
 	ParentLayerHash string `json:"parentLayerHash"`
-	LayerInfo       *LayerInfo
+	*LayerInfo
 }
 
 type LayerInfo struct {
-	CreatedBy   string `json:"createdBy"`
-	CreatedTime *time.Time
+	CreatedBy   string     `json:"createdBy"`
+	CreatedTime *time.Time `json:"createdTime"`
 }
 
 type SeverityStats struct {
