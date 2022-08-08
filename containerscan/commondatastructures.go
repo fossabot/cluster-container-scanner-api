@@ -32,6 +32,7 @@ type ESLayer struct {
 type LayerInfo struct {
 	CreatedBy   string     `json:"createdBy,omitempty"`
 	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	LayerOrder  int        `json:"layerOrder,omitempty"` // order 0 is first layer in the list
 }
 
 type SeverityStats struct {
