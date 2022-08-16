@@ -13,6 +13,7 @@ type CommonContainerVulnerabilityResult struct {
 	WLID              string                                   `json:"wlid"`
 	ContainerScanID   string                                   `json:"containersScanID"`
 	Layers            []ESLayer                                `json:"layers"`
+	LayersNested      []ESLayer                                `json:"layersNested"`
 	Timestamp         int64                                    `json:"timestamp"`
 	IsLastScan        int                                      `json:"isLastScan"`
 	IsFixed           int                                      `json:"isFixed"`
