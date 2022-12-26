@@ -105,6 +105,8 @@ type CommonContainerScanSummaryResult struct {
 	Version string `json:"version"`
 
 	Vulnerabilities []ShortVulnerabilityResult `json:"vulnerabilities"`
+
+	IsLastScan int `json:"isLastScan"`
 }
 
 func (summary *CommonContainerScanSummaryResult) Validate() bool {
