@@ -23,6 +23,9 @@ type ScanResultReport struct {
 	Layers                   LayersList                 `json:"layers"`
 	ListOfDangerousArtifcats []string                   `json:"listOfDangerousArtifcats"`
 	Session                  apis.SessionChain          `json:"session,omitempty"`
+	ImageSignatureValid           bool                  `json:"imageSignatureValid,omitempty"`
+    ImageHasSignature             bool                  `json:"imageHasSignature,omitempty"`
+    ImageSignatureValidationError string                `json:"imageSignatureValidationError,omitempty"`
 }
 
 //ScanResultReportV1 replaces ScanResultReport
