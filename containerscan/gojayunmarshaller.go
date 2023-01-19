@@ -237,12 +237,6 @@ func (scan *ScanResultReport) UnmarshalJSONObject(dec *gojay.Decoder, key string
 		err = dec.Array(&(scan.Layers))
 	case "listOfDangerousArtifcats":
 		err = dec.SliceString(&(scan.ListOfDangerousArtifcats))
-	case "ImageSignatureValid":
-		err = dec.Bool(&(scan.ImageSignatureValid))
-	case "ImageHasSignature":
-		err = dec.Bool(&(scan.ImageHasSignature))
-	case "ImageSignatureValidationError":
-		err = dec.String(&(scan.ImageSignatureValidationError))
 	}
 	return err
 }
