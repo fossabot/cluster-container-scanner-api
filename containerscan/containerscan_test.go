@@ -262,9 +262,6 @@ func TestReportValidate(t *testing.T) {
 	scanresult.ImgHash = "fsdfsdf"
 	scanresult.ImgTag = "yuy43434"
 	scanresult.CustomerGUID = "<MY_GUID>"
-	scanresult.ImageHasSignature = true
-	scanresult.ImageSignatureValid = true
-	scanresult.ImageSignatureValidationError ="Some error"
 	if scanresult.Validate() {
 		t.Error("invalid customer guid passed validation")
 	}
