@@ -105,6 +105,12 @@ type CommonContainerScanSummaryResult struct {
 	Version string `json:"version"`
 
 	Vulnerabilities []ShortVulnerabilityResult `json:"vulnerabilities"`
+
+
+	ImageSignatureValid           bool                  `json:"imageSignatureValid,omitempty"`
+    ImageHasSignature             bool                  `json:"imageHasSignature,omitempty"`
+    ImageSignatureValidationError string                `json:"imageSignatureValidationError,omitempty"`
+
 }
 
 func (summary *CommonContainerScanSummaryResult) Validate() bool {
