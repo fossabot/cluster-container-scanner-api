@@ -87,6 +87,10 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 		ContainerScanID:          scanresult.AsFNVHash(),
 		ListOfDangerousArtifcats: scanresult.ListOfDangerousArtifcats,
 		JobIDs:                   scanresult.Session.JobIDs,
+
+		ImageSignatureValid:           scanresult.ImageSignatureValid,
+		ImageHasSignature:             scanresult.ImageHasSignature,
+		ImageSignatureValidationError: scanresult.ImageSignatureValidationError,
 	}
 
 	summary.Cluster = designatorsObj.Attributes[armotypes.AttributeCluster]
