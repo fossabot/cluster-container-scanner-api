@@ -140,7 +140,7 @@ type CommonContainerScanSummaryResultV2 struct {
 	Timestamp     int64    `json:"timestamp"`
 	WLID          string   `json:"wlid"`
 	ImgID         string   `json:"imageID"`
-	ImgHash       string   `json:"imageHash"`
+	ImgTag        string   `json:"imageTag"`
 	Cluster       string   `json:"cluster"`
 	Namespace     string   `json:"namespace"`
 	ContainerName string   `json:"containerName"`
