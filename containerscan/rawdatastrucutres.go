@@ -24,12 +24,12 @@ type ScanResultReport struct {
 	ListOfDangerousArtifcats []string                   `json:"listOfDangerousArtifcats"`
 	Session                  apis.SessionChain          `json:"session,omitempty"`
 
-	ImageSignatureValid           bool                  `json:"imageSignatureValid,omitempty"`
-    ImageHasSignature             bool                  `json:"imageHasSignature,omitempty"`
-    ImageSignatureValidationError string                `json:"imageSignatureValidationError,omitempty"`
+	ImageSignatureValid           bool   `json:"imageSignatureValid,omitempty"`
+	ImageHasSignature             bool   `json:"imageHasSignature,omitempty"`
+	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
 }
 
-//ScanResultReportV1 replaces ScanResultReport
+// ScanResultReportV1 replaces ScanResultReport
 type ScanResultReportV1 struct {
 	Designators     armotypes.PortalDesignator           `json:"designators"`
 	Timestamp       int64                                `json:"timestamp"`
@@ -37,6 +37,15 @@ type ScanResultReportV1 struct {
 	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
 	Summary         *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
 	PaginationInfo  apis.PaginationMarks                 `json:"paginationInfo"`
+}
+
+type ScanResultReportV2 struct {
+	Designators     armotypes.PortalDesignator             `json:"designators"`
+	Timestamp       int64                                  `json:"timestamp"`
+	ContainerScanID string                                 `json:"containersScanID"`
+	Vulnerabilities []CommonContainerVulnerabilityResultV2 `json:"vulnerabilities"`
+	Summary         *CommonContainerScanSummaryResultV2    `json:"summary,omitempty"`
+	PaginationInfo  apis.PaginationMarks                   `json:"paginationInfo"`
 }
 
 // ScanResultLayer - represents a single layer from container scan result
@@ -72,6 +81,25 @@ type Vulnerability struct {
 	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"` // Active relevant exceptions
 }
 
+type VulnerabilityV2 struct {
+	Name               string                                   `json:"name"`
+	ImgID              string                                   `json:"imageID"`
+	ImgTag             string                                   `json:"imageTag"`
+	RelatedPackageName string                                   `json:"packageName"`
+	PackageVersion     string                                   `json:"packageVersion"`
+	Link               string                                   `json:"link"`
+	Description        string                                   `json:"description"`
+	Severity           string                                   `json:"severity"`
+	SeverityScore      int                                      `json:"severityScore"`
+	Fixes              VulFixes                                 `json:"fixedIn"`
+	IsRelevant         *bool                                    `json:"isRelevant,omitempty"`
+	UrgentCount        int                                      `json:"urgent"`
+	NeglectedCount     int                                      `json:"neglected"`
+	HealthStatus       string                                   `json:"healthStatus"`
+	Categories         VulnerabilityCategory                    `json:"categories"`
+	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"` // Active relevant exceptions
+}
+
 // FixedIn when and which pkg was fixed (which version as well)
 type FixedIn struct {
 	Name    string `json:"name"`
@@ -93,19 +121,19 @@ type PackageFile struct {
 
 // types to provide unmarshalling:
 
-//VulnerabilitiesList -s.e
+// VulnerabilitiesList -s.e
 type LayersList []ScanResultLayer
 
-//VulnerabilitiesList -s.e
+// VulnerabilitiesList -s.e
 type VulnerabilitiesList []Vulnerability
 
-//LinuxPkgs - slice of linux pkgs
+// LinuxPkgs - slice of linux pkgs
 type LinuxPkgs []LinuxPackage
 
-//VulFixes - information bout when/how this vul was fixed
+// VulFixes - information bout when/how this vul was fixed
 type VulFixes []FixedIn
 
-//PkgFiles - slice of files belong to specific pkg
+// PkgFiles - slice of files belong to specific pkg
 type PkgFiles []PackageFile
 
 func (v *ScanResultReport) AsFNVHash() string {
