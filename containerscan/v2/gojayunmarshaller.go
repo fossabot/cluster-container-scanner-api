@@ -10,8 +10,8 @@ func (scan *ScanResultReport) UnmarshalJSONObject(dec *gojay.Decoder, key string
 		err = dec.String(&(scan.ContainerScanID))
 	case "designators":
 		err = dec.Object(&(scan.Designators))
-	case "isRelevancy":
-		err = dec.Bool(&(scan.IsRelevancy))
+	case "hasRelevancyData":
+		err = dec.Bool(&(scan.HasRelevancyData))
 	}
 
 	return err

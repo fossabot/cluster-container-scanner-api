@@ -23,7 +23,7 @@ type CommonContainerScanSummaryResult struct {
 	ListOfDangerousArtifcats      []string                                 `json:"listOfDangerousArtifcats"`
 	Status                        string                                   `json:"status"`
 	Registry                      string                                   `json:"registry"`
-	VersionImage                  string                                   `json:"versionImage"`
+	ImageTagSuffix                string                                   `json:"imageTagSuffix"`
 	SeveritiesStats               []containerscan.SeverityStats            `json:"severitiesStats"`
 	ExcludedSeveritiesStats       []containerscan.SeverityStats            `json:"excludedSeveritiesStats,omitempty"`
 	Version                       string                                   `json:"version"`

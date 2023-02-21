@@ -11,7 +11,7 @@
       "workloadHash": "8190928904639901517"
      }
     },
-    "isRelevancy": true,
+    "hasRelevancyData": true,
     "timestamp": 1656250322,
     "containersScanID": "5969736482532194479",
     "vulnerabilities": [
