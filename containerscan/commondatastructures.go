@@ -24,24 +24,6 @@ type CommonContainerVulnerabilityResult struct {
 	Vulnerability `json:",inline"`
 }
 
-type CommonContainerVulnerabilityResultV2 struct {
-	Designators armotypes.PortalDesignator `json:"designators"`
-	Context     []armotypes.ArmoContext    `json:"context"`
-
-	WLID              string                                   `json:"wlid"`
-	ContainerScanID   string                                   `json:"containersScanID"`
-	Layers            []ESLayer                                `json:"layers"`
-	LayersNested      []ESLayer                                `json:"layersNested"`
-	Timestamp         int64                                    `json:"timestamp"`
-	IsLastScan        int                                      `json:"isLastScan"`
-	IsFixed           int                                      `json:"isFixed"`
-	IntroducedInLayer string                                   `json:"layerHash"`
-	RelevantLinks     []string                                 `json:"links"`                       // shitty SE practice
-	RelatedExceptions []armotypes.VulnerabilityExceptionPolicy `json:"relatedExceptions,omitempty"` // configured in portal
-
-	VulnerabilityV2 `json:",inline"`
-}
-
 type ESLayer struct {
 	LayerHash       string `json:"layerHash"`
 	ParentLayerHash string `json:"parentLayerHash"`
@@ -105,42 +87,6 @@ type CommonContainerScanSummaryResult struct {
 	WLID          string   `json:"wlid"`
 	ImgTag        string   `json:"imageTag"`
 	ImgHash       string   `json:"imageHash"`
-	Cluster       string   `json:"cluster"`
-	Namespace     string   `json:"namespace"`
-	ContainerName string   `json:"containerName"`
-	PackagesName  []string `json:"packages"`
-
-	ListOfDangerousArtifcats []string `json:"listOfDangerousArtifcats"`
-
-	Status string `json:"status"`
-
-	Registry     string `json:"registry"`
-	VersionImage string `json:"versionImage"`
-
-	SeveritiesStats         []SeverityStats `json:"severitiesStats"`
-	ExcludedSeveritiesStats []SeverityStats `json:"excludedSeveritiesStats,omitempty"`
-
-	Version string `json:"version"`
-
-	Vulnerabilities []ShortVulnerabilityResult `json:"vulnerabilities"`
-
-	ImageSignatureValid           bool   `json:"imageSignatureValid,omitempty"`
-	ImageHasSignature             bool   `json:"imageHasSignature,omitempty"`
-	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
-}
-
-type CommonContainerScanSummaryResultV2 struct {
-	SeverityStats
-	Designators     armotypes.PortalDesignator `json:"designators"`
-	Context         []armotypes.ArmoContext    `json:"context"`
-	JobIDs          []string                   `json:"jobIDs"`
-	CustomerGUID    string                     `json:"customerGUID"`
-	ContainerScanID string                     `json:"containersScanID"`
-
-	Timestamp     int64    `json:"timestamp"`
-	WLID          string   `json:"wlid"`
-	ImgID         string   `json:"imageID"`
-	ImgTag        string   `json:"imageTag"`
 	Cluster       string   `json:"cluster"`
 	Namespace     string   `json:"namespace"`
 	ContainerName string   `json:"containerName"`

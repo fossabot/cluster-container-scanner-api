@@ -39,15 +39,6 @@ type ScanResultReportV1 struct {
 	PaginationInfo  apis.PaginationMarks                 `json:"paginationInfo"`
 }
 
-type ScanResultReportV2 struct {
-	Designators     armotypes.PortalDesignator             `json:"designators"`
-	Timestamp       int64                                  `json:"timestamp"`
-	ContainerScanID string                                 `json:"containersScanID"`
-	Vulnerabilities []CommonContainerVulnerabilityResultV2 `json:"vulnerabilities"`
-	Summary         *CommonContainerScanSummaryResultV2    `json:"summary,omitempty"`
-	PaginationInfo  apis.PaginationMarks                   `json:"paginationInfo"`
-}
-
 // ScanResultLayer - represents a single layer from container scan result
 type ScanResultLayer struct {
 	LayerHash       string              `json:"layerHash"`
@@ -74,25 +65,6 @@ type Vulnerability struct {
 	Metadata           interface{}                              `json:"metadata"`
 	Fixes              VulFixes                                 `json:"fixedIn"`
 	Relevancy          string                                   `json:"relevant"` // use the related enum
-	UrgentCount        int                                      `json:"urgent"`
-	NeglectedCount     int                                      `json:"neglected"`
-	HealthStatus       string                                   `json:"healthStatus"`
-	Categories         VulnerabilityCategory                    `json:"categories"`
-	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"` // Active relevant exceptions
-}
-
-type VulnerabilityV2 struct {
-	Name               string                                   `json:"name"`
-	ImgID              string                                   `json:"imageID"`
-	ImgTag             string                                   `json:"imageTag"`
-	RelatedPackageName string                                   `json:"packageName"`
-	PackageVersion     string                                   `json:"packageVersion"`
-	Link               string                                   `json:"link"`
-	Description        string                                   `json:"description"`
-	Severity           string                                   `json:"severity"`
-	SeverityScore      int                                      `json:"severityScore"`
-	Fixes              VulFixes                                 `json:"fixedIn"`
-	IsRelevant         *bool                                    `json:"isRelevant,omitempty"`
 	UrgentCount        int                                      `json:"urgent"`
 	NeglectedCount     int                                      `json:"neglected"`
 	HealthStatus       string                                   `json:"healthStatus"`
