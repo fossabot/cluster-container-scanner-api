@@ -20,7 +20,6 @@ type CommonContainerScanSummaryResult struct {
 	Namespace                     string                                   `json:"namespace"`
 	ContainerName                 string                                   `json:"containerName"`
 	PackagesName                  []string                                 `json:"packages"`
-	ListOfDangerousArtifcats      []string                                 `json:"listOfDangerousArtifcats"`
 	Status                        string                                   `json:"status"`
 	Registry                      string                                   `json:"registry"`
 	ImageTagSuffix                string                                   `json:"imageTagSuffix"`
