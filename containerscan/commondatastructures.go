@@ -7,9 +7,8 @@ import (
 )
 
 type CommonContainerVulnerabilityResult struct {
-	Designators armotypes.PortalDesignator `json:"designators"`
-	Context     []armotypes.ArmoContext    `json:"context"`
-
+	Designators       armotypes.PortalDesignator               `json:"designators"`
+	Context           []armotypes.ArmoContext                  `json:"context"`
 	WLID              string                                   `json:"wlid"`
 	ContainerScanID   string                                   `json:"containersScanID"`
 	Layers            []ESLayer                                `json:"layers"`
@@ -20,8 +19,7 @@ type CommonContainerVulnerabilityResult struct {
 	IntroducedInLayer string                                   `json:"layerHash"`
 	RelevantLinks     []string                                 `json:"links"`                       // shitty SE practice
 	RelatedExceptions []armotypes.VulnerabilityExceptionPolicy `json:"relatedExceptions,omitempty"` // configured in portal
-
-	Vulnerability ContainerScanVulnerability `json:",inline"`
+	Vulnerability     `json:",inline"`
 }
 
 type ESLayer struct {
@@ -85,36 +83,27 @@ func NewContainerScanResult() ContainerScanSummaryResult {
 
 type CommonContainerScanSummaryResult struct {
 	SeverityStats
-	Designators     armotypes.PortalDesignator `json:"designators"`
-	Context         []armotypes.ArmoContext    `json:"context"`
-	JobIDs          []string                   `json:"jobIDs"`
-	CustomerGUID    string                     `json:"customerGUID"`
-	ContainerScanID string                     `json:"containersScanID"`
-
-	Timestamp     int64    `json:"timestamp"`
-	WLID          string   `json:"wlid"`
-	ImgTag        string   `json:"imageTag"`
-	ImgHash       string   `json:"imageHash"`
-	Cluster       string   `json:"cluster"`
-	Namespace     string   `json:"namespace"`
-	ContainerName string   `json:"containerName"`
-	PackagesName  []string `json:"packages"`
-
-	ListOfDangerousArtifcats []string `json:"listOfDangerousArtifcats"`
-
-	Status string `json:"status"`
-
-	Registry     string `json:"registry"`
-	VersionImage string `json:"versionImage"`
-
-	SeveritiesStats         []SeverityStats `json:"severitiesStats"`
-	ExcludedSeveritiesStats []SeverityStats `json:"excludedSeveritiesStats,omitempty"`
-
-	Version string `json:"version"`
-
-	Vulnerabilities []ShortVulnerabilityResult `json:"vulnerabilities"`
-
-	ImageSignatureValid           bool   `json:"imageSignatureValid,omitempty"`
-	ImageHasSignature             bool   `json:"imageHasSignature,omitempty"`
-	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
+	Designators                   armotypes.PortalDesignator `json:"designators"`
+	Context                       []armotypes.ArmoContext    `json:"context"`
+	JobIDs                        []string                   `json:"jobIDs"`
+	CustomerGUID                  string                     `json:"customerGUID"`
+	ContainerScanID               string                     `json:"containersScanID"`
+	Timestamp                     int64                      `json:"timestamp"`
+	WLID                          string                     `json:"wlid"`
+	ImageID                       string                     `json:"imageID"`
+	ImageTag                      string                     `json:"imageTag"`
+	ClusterName                   string                     `json:"clusterName"`
+	Namespace                     string                     `json:"namespace"`
+	ContainerName                 string                     `json:"containerName"`
+	PackagesName                  []string                   `json:"packages"`
+	Status                        string                     `json:"status"`
+	Registry                      string                     `json:"registry"`
+	ImageTagSuffix                string                     `json:"imageTagSuffix"`
+	SeveritiesStats               []SeverityStats            `json:"severitiesStats"`
+	ExcludedSeveritiesStats       []SeverityStats            `json:"excludedSeveritiesStats,omitempty"`
+	Version                       string                     `json:"version"`
+	Vulnerabilities               []ShortVulnerabilityResult `json:"vulnerabilities"`
+	ImageSignatureValid           bool                       `json:"imageSignatureValid,omitempty"`
+	ImageHasSignature             bool                       `json:"imageHasSignature,omitempty"`
+	ImageSignatureValidationError string                     `json:"imageSignatureValidationError,omitempty"`
 }

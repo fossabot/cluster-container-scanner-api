@@ -38,17 +38,14 @@ func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
 	if sumObj.Registry != "" {
 		t.Errorf("sumObj.Registry = %v", sumObj.Registry)
 	}
-	if sumObj.VersionImage != "nginx:1.18.0" {
+	if sumObj.ImageTagSuffix != "nginx:1.18.0" {
 		t.Errorf("sumObj.VersionImage = %v", sumObj.Registry)
 	}
-	if sumObj.ImgTag != "nginx:1.18.0" {
-		t.Errorf("sumObj.ImgTag = %v", sumObj.ImgTag)
+	if sumObj.ImageTag != "nginx:1.18.0" {
+		t.Errorf("sumObj.ImgTag = %v", sumObj.ImageTag)
 	}
 	if sumObj.Status != "Success" {
 		t.Errorf("sumObj.Status = %v", sumObj.Status)
-	}
-	if len(sumObj.ListOfDangerousArtifcats) != 3 {
-		t.Errorf("sumObj.ListOfDangerousArtifcats = %v", sumObj.ListOfDangerousArtifcats)
 	}
 }
 
@@ -292,16 +289,14 @@ func TestReportValidate(t *testing.T) {
 func TestVulnerabilityToShort(t *testing.T) {
 	vul := Vulnerability{
 		Name:               "name",
-		ImgHash:            "imageHash",
-		ImgTag:             "imageTag",
+		ImageID:            "imageHash",
+		ImageTag:           "imageTag",
 		RelatedPackageName: "packageName",
 		PackageVersion:     "packageVersion",
 		Link:               "link",
 		Description:        "description",
 		Severity:           "severity",
 		SeverityScore:      5,
-		Metadata:           "metadata",
-		Relevancy:          "relevant",
 	}
 	short := vul.ToShortVulnerabilityResult()
 	if short.Name != vul.Name {

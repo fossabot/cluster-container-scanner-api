@@ -1,6 +1,12 @@
 package containerscan
 
-import "github.com/armosec/armoapi-go/armotypes"
+import (
+	"fmt"
+	"hash/fnv"
+
+	"github.com/armosec/armoapi-go/apis"
+	"github.com/armosec/armoapi-go/armotypes"
+)
 
 // ContainerScanVulnerabilityResult
 
@@ -52,12 +58,8 @@ func (c *CommonContainerVulnerabilityResult) GetRelatedExceptions() []armotypes.
 	return c.RelatedExceptions
 }
 
-func (c *CommonContainerVulnerabilityResult) GetVulnerability() ContainerScanVulnerability {
-	return c.Vulnerability
-}
-
-func (c *CommonContainerVulnerabilityResult) SetVulnerability(vulnerability ContainerScanVulnerability) {
-	c.Vulnerability = vulnerability
+func (c *CommonContainerVulnerabilityResult) GetVulnerability() VulnerabilityResult {
+	return &c.Vulnerability
 }
 
 func (c *CommonContainerVulnerabilityResult) SetDesignators(designators armotypes.PortalDesignator) {
@@ -118,11 +120,11 @@ func (summary *CommonContainerScanSummaryResult) GetWLID() string {
 }
 
 func (summary *CommonContainerScanSummaryResult) GetImageTag() string {
-	return summary.ImgTag
+	return summary.ImageTag
 }
 
 func (summary *CommonContainerScanSummaryResult) GetImageID() string {
-	return summary.ImgHash
+	return summary.ImageID
 }
 
 func (summary *CommonContainerScanSummaryResult) GetSeverityStats() SeverityStats {
@@ -134,7 +136,7 @@ func (summary *CommonContainerScanSummaryResult) GetSeveritiesStats() []Severity
 }
 
 func (summary *CommonContainerScanSummaryResult) GetClusterName() string {
-	return summary.Cluster
+	return summary.ClusterName
 }
 
 func (summary *CommonContainerScanSummaryResult) GetNamespace() string {
@@ -154,7 +156,7 @@ func (summary *CommonContainerScanSummaryResult) GetRegistry() string {
 }
 
 func (summary *CommonContainerScanSummaryResult) GetImageTageSuffix() string {
-	return summary.VersionImage
+	return summary.ImageTagSuffix
 }
 
 func (summary *CommonContainerScanSummaryResult) GetVersion() string {
@@ -182,7 +184,7 @@ func (summary *CommonContainerScanSummaryResult) GetJobIDs() []string {
 }
 
 func (summary *CommonContainerScanSummaryResult) Validate() bool {
-	return summary.CustomerGUID != "" && summary.ContainerScanID != "" && (summary.ImgTag != "" || summary.ImgHash != "") && summary.Timestamp > 0
+	return summary.CustomerGUID != "" && summary.ContainerScanID != "" && (summary.ImageTag != "" || summary.ImageID != "") && summary.Timestamp > 0
 }
 func (summary *CommonContainerScanSummaryResult) SetDesignators(designators armotypes.PortalDesignator) {
 	summary.Designators = designators
@@ -205,11 +207,11 @@ func (summary *CommonContainerScanSummaryResult) SetWLID(wlid string) {
 }
 
 func (summary *CommonContainerScanSummaryResult) SetImageTag(imageTag string) {
-	summary.ImgTag = imageTag
+	summary.ImageTag = imageTag
 }
 
 func (summary *CommonContainerScanSummaryResult) SetImageID(imageID string) {
-	summary.ImgHash = imageID
+	summary.ImageID = imageID
 }
 
 func (summary *CommonContainerScanSummaryResult) SetSeverityStats(severityStats SeverityStats) {
@@ -221,7 +223,7 @@ func (summary *CommonContainerScanSummaryResult) SetSeveritiesStats(severitiesSt
 }
 
 func (summary *CommonContainerScanSummaryResult) SetClusterName(clusterName string) {
-	summary.Cluster = clusterName
+	summary.ClusterName = clusterName
 }
 
 func (summary *CommonContainerScanSummaryResult) SetNamespace(namespace string) {
@@ -241,7 +243,7 @@ func (summary *CommonContainerScanSummaryResult) SetRegistry(registry string) {
 }
 
 func (summary *CommonContainerScanSummaryResult) SetImageTageSuffix(imageTageSuffix string) {
-	summary.VersionImage = imageTageSuffix
+	summary.ImageTagSuffix = imageTageSuffix
 }
 
 func (summary *CommonContainerScanSummaryResult) SetVersion(version string) {
@@ -258,11 +260,11 @@ func (v *Vulnerability) GetName() string {
 }
 
 func (v *Vulnerability) GetImageID() string {
-	return v.ImgHash
+	return v.ImageID
 }
 
 func (v *Vulnerability) GetImageTag() string {
-	return v.ImgTag
+	return v.ImageTag
 }
 
 func (v *Vulnerability) GetRelatedPackageName() string {
@@ -289,16 +291,12 @@ func (v *Vulnerability) GetSeverityScore() int {
 	return v.SeverityScore
 }
 
-func (v *Vulnerability) GetMetadata() interface{} {
-	return v.Metadata
-}
-
 func (v *Vulnerability) GetFixes() VulFixes {
 	return v.Fixes
 }
 
-func (v *Vulnerability) GetRelevancy() string {
-	return v.Relevancy
+func (v *Vulnerability) GetIsRelevant() *bool {
+	return v.IsRelevant
 }
 
 func (v *Vulnerability) GetUrgentCount() int {
@@ -325,12 +323,12 @@ func (v *Vulnerability) SetName(name string) {
 	v.Name = name
 }
 
-func (v *Vulnerability) SetImageHash(imgHash string) {
-	v.ImgHash = imgHash
+func (v *Vulnerability) SetImageID(ImageID string) {
+	v.ImageID = ImageID
 }
 
-func (v *Vulnerability) SetImageTag(imgTag string) {
-	v.ImgTag = imgTag
+func (v *Vulnerability) SetImageTag(ImageTag string) {
+	v.ImageTag = ImageTag
 }
 
 func (v *Vulnerability) SetRelatedPackageName(relatedPackageName string) {
@@ -357,16 +355,8 @@ func (v *Vulnerability) SetSeverityScore(severityScore int) {
 	v.SeverityScore = severityScore
 }
 
-func (v *Vulnerability) SetMetadata(metadata interface{}) {
-	v.Metadata = metadata
-}
-
 func (v *Vulnerability) SetFixes(fixes VulFixes) {
 	v.Fixes = fixes
-}
-
-func (v *Vulnerability) SetRelevancy(relevancy string) {
-	v.Relevancy = relevancy
 }
 
 func (v *Vulnerability) SetUrgentCount(urgentCount int) {
@@ -389,6 +379,89 @@ func (v *Vulnerability) SetExceptionApplied(exceptionApplied []armotypes.Vulnera
 	v.ExceptionApplied = exceptionApplied
 }
 
-func (v *Vulnerability) HasRelevancyData() bool {
-	return false
+func (v *Vulnerability) SetIsRelevant(isRelevant *bool) {
+	v.IsRelevant = isRelevant
+}
+
+// ScanResultReportV1
+func (v *ScanResultReport) AsFNVHash() string {
+	hasher := fnv.New64a()
+	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
+	return fmt.Sprintf("%v", hasher.Sum64())
+}
+
+func (r *ScanResultReportV1) IsLastReport() bool {
+	return r.PaginationInfo.IsLastReport
+}
+
+func (r *ScanResultReportV1) GetDesignators() armotypes.PortalDesignator {
+	return r.Designators
+}
+
+func (r *ScanResultReportV1) GetContainerScanID() string {
+	return r.ContainerScanID
+}
+
+func (r *ScanResultReportV1) GetTimestamp() int64 {
+	return r.Timestamp
+}
+
+func (r *ScanResultReportV1) GetWorkloadHash() string {
+	return r.GetDesignators().Attributes["workloadHash"]
+}
+
+func (r *ScanResultReportV1) GetCustomerGUID() string {
+	return r.GetSummary().GetCustomerGUID()
+}
+
+func (r *ScanResultReportV1) GetSummary() ContainerScanSummaryResult {
+	return r.Summary
+}
+
+func (r *ScanResultReportV1) GetHasRelevancyData() bool {
+	return r.HasRelevancyData
+}
+
+func (r *ScanResultReportV1) GetVulnerabilities() []ContainerScanVulnerabilityResult {
+	var vulnerabilities []ContainerScanVulnerabilityResult
+	for _, vul := range r.Vulnerabilities {
+		vulnerabilities = append(vulnerabilities, &vul)
+	}
+	return vulnerabilities
+}
+
+func NewContainerScanVulnerabilityResult() ContainerScanVulnerabilityResult {
+	return &CommonContainerVulnerabilityResult{}
+}
+
+func (r *ScanResultReportV1) GetVersion() string {
+	return "v1"
+}
+
+func (r *ScanResultReportV1) GetPaginationInfo() apis.PaginationMarks {
+	return r.PaginationInfo
+}
+
+func (r *ScanResultReportV1) SetDesignators(designators armotypes.PortalDesignator) {
+	r.Designators = designators
+}
+
+func (r *ScanResultReportV1) SetContainerScanID(containerScanID string) {
+	r.GetSummary().SetContainerScanID(containerScanID)
+}
+
+func (r *ScanResultReportV1) SetTimestamp(timestamp int64) {
+	r.Timestamp = timestamp
+}
+
+func (r *ScanResultReportV1) SetWorkloadHash(workloadHash string) {
+	r.GetDesignators().Attributes["workloadHash"] = workloadHash
+}
+
+func (r *ScanResultReportV1) SetCustomerGUID(customerGUID string) {
+	r.GetSummary().SetCustomerGUID(customerGUID)
+}
+
+func (r *ScanResultReportV1) SetPaginationInfo(paginationInfo apis.PaginationMarks) {
+	r.PaginationInfo = paginationInfo
 }

@@ -16,14 +16,13 @@ type ScanReport interface {
 	GetVulnerabilities() []ContainerScanVulnerabilityResult
 	GetVersion() string
 	GetPaginationInfo() apis.PaginationMarks
+	GetHasRelevancyData() bool
 
 	SetDesignators(armotypes.PortalDesignator)
 	SetContainerScanID(string)
 	SetTimestamp(int64)
 	SetWorkloadHash(string)
 	SetCustomerGUID(string)
-	SetSummary(ContainerScanSummaryResult)
-	SetVulnerabilities([]ContainerScanVulnerabilityResult)
 }
 
 type ContainerScanSummaryResult interface {
@@ -79,7 +78,7 @@ type ContainerScanVulnerabilityResult interface {
 	GetIntroducedInLayer() string
 	GetRelevantLinks() []string
 	GetRelatedExceptions() []armotypes.VulnerabilityExceptionPolicy
-	GetVulnerability() ContainerScanVulnerability
+	GetVulnerability() VulnerabilityResult
 
 	SetDesignators(designators armotypes.PortalDesignator)
 	SetContext(context []armotypes.ArmoContext)
@@ -93,7 +92,6 @@ type ContainerScanVulnerabilityResult interface {
 	SetIntroducedInLayer(introducedInLayer string)
 	SetRelevantLinks(relevantLinks []string)
 	SetRelatedExceptions(relatedExceptions []armotypes.VulnerabilityExceptionPolicy)
-	SetVulnerability(vulnerability ContainerScanVulnerability)
 }
 
 type ContainerScanVulnerability interface {
@@ -133,6 +131,44 @@ type ContainerScanVulnerability interface {
 	HasRelevancyData() bool
 }
 
+type VulnerabilityResult interface {
+	// Getters
+	GetName() string
+	GetImageID() string
+	GetImageTag() string
+	GetRelatedPackageName() string
+	GetPackageVersion() string
+	GetLink() string
+	GetDescription() string
+	GetSeverity() string
+	GetSeverityScore() int
+	GetFixes() VulFixes
+	GetIsRelevant() *bool
+	GetUrgentCount() int
+	GetNeglectedCount() int
+	GetHealthStatus() string
+	GetCategories() VulnerabilityCategory
+	GetExceptionApplied() []armotypes.VulnerabilityExceptionPolicy
+
+	// Setters
+	SetName(string)
+	SetImageID(string)
+	SetImageTag(string)
+	SetRelatedPackageName(string)
+	SetPackageVersion(string)
+	SetLink(string)
+	SetDescription(string)
+	SetSeverity(string)
+	SetSeverityScore(int)
+	SetFixes(VulFixes)
+	SetIsRelevant(*bool)
+	SetUrgentCount(int)
+	SetNeglectedCount(int)
+	SetHealthStatus(string)
+	SetCategories(VulnerabilityCategory)
+	SetExceptionApplied([]armotypes.VulnerabilityExceptionPolicy)
+}
+
 func NewScanReport() ScanReport {
 	return &ScanResultReportV1{}
 }
@@ -141,8 +177,6 @@ func NewContainerScanSummaryResult() ContainerScanSummaryResult {
 	return &CommonContainerScanSummaryResult{}
 }
 
-func NewContainerScanVulnerabilityResult() ContainerScanVulnerabilityResult {
-	return &CommonContainerVulnerabilityResult{
-		WLID: "",
-	}
+func NewVulnerabilityResult() VulnerabilityResult {
+	return &Vulnerability{}
 }

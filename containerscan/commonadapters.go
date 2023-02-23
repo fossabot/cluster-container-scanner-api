@@ -22,7 +22,7 @@ func (longVul *Vulnerability) ToShortVulnerabilityResult() *ShortVulnerabilityRe
 }
 
 // ToFlatVulnerabilities - returnsgit p
-func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVulnerabilityResult {
+func (scanresult *ScanResultReport) ToFlatVulnerabilities() []ContainerScanVulnerabilityResult {
 	vuls := make([]CommonContainerVulnerabilityResult, 0)
 	vul2indx := make(map[string]int)
 	scanID := scanresult.AsFNVHash()
@@ -42,7 +42,7 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVul
 			}
 
 			vul.SeverityScore = SeverityStr2Score[vul.Severity]
-			result.Vulnerability = &vul
+			result.Vulnerability = vul
 			result.Layers = make([]ESLayer, 0)
 			result.Layers = append(result.Layers, esLayer)
 			result.ContainerScanID = scanID
@@ -68,37 +68,39 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVul
 		vuls[i].IntroducedInLayer = earlyLayer
 
 	}
-
-	return vuls
+	vulnsArr := make([]ContainerScanVulnerabilityResult, len(vuls))
+	for i, v := range vuls {
+		vulnsArr[i] = &v
+	}
+	return vulnsArr
 }
 
 func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResult {
 	designatorsObj, ctxList := scanresult.GetDesignatorsNContext()
 	summary := &CommonContainerScanSummaryResult{
-		Designators:              *designatorsObj,
-		Context:                  ctxList,
-		CustomerGUID:             scanresult.CustomerGUID,
-		ImgTag:                   scanresult.ImgTag,
-		ImgHash:                  scanresult.ImgHash,
-		WLID:                     scanresult.WLID,
-		Timestamp:                scanresult.Timestamp,
-		ContainerName:            scanresult.ContainerName,
-		ContainerScanID:          scanresult.AsFNVHash(),
-		ListOfDangerousArtifcats: scanresult.ListOfDangerousArtifcats,
-		JobIDs:                   scanresult.Session.JobIDs,
+		Designators:     *designatorsObj,
+		Context:         ctxList,
+		CustomerGUID:    scanresult.CustomerGUID,
+		ImageTag:        scanresult.ImgTag,
+		ImageID:         scanresult.ImgHash,
+		WLID:            scanresult.WLID,
+		Timestamp:       scanresult.Timestamp,
+		ContainerName:   scanresult.ContainerName,
+		ContainerScanID: scanresult.AsFNVHash(),
+		JobIDs:          scanresult.Session.JobIDs,
 
 		ImageSignatureValid:           scanresult.ImageSignatureValid,
 		ImageHasSignature:             scanresult.ImageHasSignature,
 		ImageSignatureValidationError: scanresult.ImageSignatureValidationError,
 	}
 
-	summary.Cluster = designatorsObj.Attributes[armotypes.AttributeCluster]
+	summary.ClusterName = designatorsObj.Attributes[armotypes.AttributeCluster]
 	summary.Namespace = designatorsObj.Attributes[armotypes.AttributeNamespace]
 
 	imageInfo, e2 := cautils.ImageTagToImageInfo(scanresult.ImgTag)
 	if e2 == nil {
 		summary.Registry = imageInfo.Registry
-		summary.VersionImage = imageInfo.VersionImage
+		summary.ImageTagSuffix = imageInfo.VersionImage
 	}
 
 	summary.PackagesName = make([]string, 0)
@@ -156,15 +158,6 @@ func (scanresult *ScanResultReport) Summarize() *CommonContainerScanSummaryResul
 					summary.RCEFixCount++
 					vulnSeverityStats.RCEFixCount++
 				}
-			}
-			if vul.Relevancy == Relevant {
-				vulnSeverityStats.RelevantCount++
-				incrementCounter(&summary.RelevantCount, true, isIgnored)
-				if isFixed {
-					vulnSeverityStats.FixAvailableForRelevantCount++
-					incrementCounter(&summary.FixAvailableForRelevantCount, true, isIgnored)
-				}
-
 			}
 			severitiesStats[vul.Severity] = vulnSeverityStats
 		}
