@@ -90,7 +90,7 @@ type CommonContainerScanSummaryResult struct { // implements ContainerScanSummar
 	PackagesName                  []string                   `json:"packages"`
 	Status                        string                     `json:"status"`
 	Registry                      string                     `json:"registry"`
-	ImageTagSuffix                string                     `json:"imageTagSuffix"`
+	ImageTagSuffix                string                     `json:"versionImage"`
 	SeveritiesStats               []SeverityStats            `json:"severitiesStats"`
 	ExcludedSeveritiesStats       []SeverityStats            `json:"excludedSeveritiesStats,omitempty"`
 	Version                       string                     `json:"version"`
