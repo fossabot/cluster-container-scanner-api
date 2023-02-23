@@ -21,7 +21,7 @@ type CommonContainerVulnerabilityResult struct {
 	RelevantLinks     []string                                 `json:"links"`                       // shitty SE practice
 	RelatedExceptions []armotypes.VulnerabilityExceptionPolicy `json:"relatedExceptions,omitempty"` // configured in portal
 
-	Vulnerability `json:",inline"`
+	Vulnerability ContainerScanVulnerability `json:",inline"`
 }
 
 type ESLayer struct {
@@ -75,6 +75,14 @@ type CommonContainerScanSeveritySummary struct {
 	DayDate         string `json:"dayDate"`
 }
 
+func NewContainerScanResult() ContainerScanSummaryResult {
+	return &CommonContainerScanSummaryResult{
+		SeverityStats: SeverityStats{
+			Severity: "info",
+		},
+	}
+}
+
 type CommonContainerScanSummaryResult struct {
 	SeverityStats
 	Designators     armotypes.PortalDesignator `json:"designators"`
@@ -109,8 +117,4 @@ type CommonContainerScanSummaryResult struct {
 	ImageSignatureValid           bool   `json:"imageSignatureValid,omitempty"`
 	ImageHasSignature             bool   `json:"imageHasSignature,omitempty"`
 	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
-}
-
-func (summary *CommonContainerScanSummaryResult) Validate() bool {
-	return summary.CustomerGUID != "" && summary.ContainerScanID != "" && (summary.ImgTag != "" || summary.ImgHash != "") && summary.Timestamp > 0
 }

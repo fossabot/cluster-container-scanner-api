@@ -31,12 +31,12 @@ type ScanResultReport struct {
 
 // ScanResultReportV1 replaces ScanResultReport
 type ScanResultReportV1 struct {
-	Designators     armotypes.PortalDesignator           `json:"designators"`
-	Timestamp       int64                                `json:"timestamp"`
-	ContainerScanID string                               `json:"containersScanID"`
-	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
-	Summary         *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
-	PaginationInfo  apis.PaginationMarks                 `json:"paginationInfo"`
+	Designators     armotypes.PortalDesignator         `json:"designators"`
+	Timestamp       int64                              `json:"timestamp"`
+	ContainerScanID string                             `json:"containersScanID"`
+	Vulnerabilities []ContainerScanVulnerabilityResult `json:"vulnerabilities"`
+	Summary         ContainerScanSummaryResult         `json:"summary,omitempty"`
+	PaginationInfo  apis.PaginationMarks               `json:"paginationInfo"`
 }
 
 // ScanResultLayer - represents a single layer from container scan result
@@ -112,4 +112,76 @@ func (v *ScanResultReport) AsFNVHash() string {
 	hasher := fnv.New64a()
 	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
 	return fmt.Sprintf("%v", hasher.Sum64())
+}
+
+func (r *ScanResultReportV1) IsLastReport() bool {
+	return r.PaginationInfo.IsLastReport
+}
+
+func (r *ScanResultReportV1) GetDesignators() armotypes.PortalDesignator {
+	return r.Designators
+}
+
+func (r *ScanResultReportV1) GetContainerScanID() string {
+	return r.ContainerScanID
+}
+
+func (r *ScanResultReportV1) GetTimestamp() int64 {
+	return r.Timestamp
+}
+
+func (r *ScanResultReportV1) GetWorkloadHash() string {
+	return r.GetDesignators().Attributes["workloadHash"]
+}
+
+func (r *ScanResultReportV1) GetCustomerGUID() string {
+	return r.GetSummary().GetCustomerGUID()
+}
+
+func (r *ScanResultReportV1) GetSummary() ContainerScanSummaryResult {
+	return r.Summary
+}
+
+func (r *ScanResultReportV1) GetVulnerabilities() []ContainerScanVulnerabilityResult {
+	return r.Vulnerabilities
+}
+
+func (r *ScanResultReportV1) GetVersion() string {
+	return "v1"
+}
+
+func (r *ScanResultReportV1) GetPaginationInfo() apis.PaginationMarks {
+	return r.PaginationInfo
+}
+
+func (r *ScanResultReportV1) SetDesignators(designators armotypes.PortalDesignator) {
+	r.Designators = designators
+}
+
+func (r *ScanResultReportV1) SetContainerScanID(containerScanID string) {
+	r.GetSummary().SetContainerScanID(containerScanID)
+}
+
+func (r *ScanResultReportV1) SetTimestamp(timestamp int64) {
+	r.Timestamp = timestamp
+}
+
+func (r *ScanResultReportV1) SetWorkloadHash(workloadHash string) {
+	r.GetDesignators().Attributes["workloadHash"] = workloadHash
+}
+
+func (r *ScanResultReportV1) SetCustomerGUID(customerGUID string) {
+	r.GetSummary().SetCustomerGUID(customerGUID)
+}
+
+func (r *ScanResultReportV1) SetSummary(summary ContainerScanSummaryResult) {
+	r.Summary = summary
+}
+
+func (r *ScanResultReportV1) SetVulnerabilities(vulnerabilities []ContainerScanVulnerabilityResult) {
+	r.Vulnerabilities = vulnerabilities
+}
+
+func (r *ScanResultReportV1) SetPaginationInfo(paginationInfo apis.PaginationMarks) {
+	r.PaginationInfo = paginationInfo
 }

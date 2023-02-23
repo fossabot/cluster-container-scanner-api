@@ -42,7 +42,7 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVul
 			}
 
 			vul.SeverityScore = SeverityStr2Score[vul.Severity]
-			result.Vulnerability = vul
+			result.Vulnerability = &vul
 			result.Layers = make([]ESLayer, 0)
 			result.Layers = append(result.Layers, esLayer)
 			result.ContainerScanID = scanID
@@ -50,9 +50,8 @@ func (scanresult *ScanResultReport) ToFlatVulnerabilities() []CommonContainerVul
 			result.IsFixed = CalculateFixed(vul.Fixes)
 			result.RelevantLinks = append(result.RelevantLinks, "https://nvd.nist.gov/vuln/detail/"+vul.Name)
 			result.RelevantLinks = append(result.RelevantLinks, vul.Link)
-			result.Vulnerability.Link = "https://nvd.nist.gov/vuln/detail/" + vul.Name
-
-			result.Categories.IsRCE = result.IsRCE()
+			result.Vulnerability.SetLink("https://nvd.nist.gov/vuln/detail/" + vul.Name)
+			result.GetVulnerability().SetCategories(VulnerabilityCategory{IsRCE: vul.IsRCE()})
 			vuls = append(vuls, result)
 			vul2indx[vul.Name] = len(vuls) - 1
 

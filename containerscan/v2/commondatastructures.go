@@ -45,5 +45,5 @@ type CommonContainerVulnerabilityResult struct {
 	IntroducedInLayer string                                   `json:"layerHash"`
 	RelevantLinks     []string                                 `json:"links"`                       // shitty SE practice
 	RelatedExceptions []armotypes.VulnerabilityExceptionPolicy `json:"relatedExceptions,omitempty"` // configured in portal
-	Vulnerability     `json:",inline"`
+	Vulnerability     containerscan.ContainerScanVulnerability `json:",inline"`
 }
