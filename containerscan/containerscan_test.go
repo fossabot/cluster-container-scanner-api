@@ -69,6 +69,7 @@ func TestScanResultReportV1Decoding(t *testing.T) {
 	assert.Equal(t, "deployment", scanReport.Designators.Attributes[armotypes.AttributeKind])
 	assert.Equal(t, "e57ec5a0-695f-4777-8366-1c64fada00a0", scanReport.Designators.Attributes[armotypes.AttributeCustomerGUID])
 	assert.Equal(t, "myContainer", scanReport.Designators.Attributes[armotypes.AttributeContainerName])
+	assert.Equal(t, false, scanReport.HasRelevancyData)
 
 }
 

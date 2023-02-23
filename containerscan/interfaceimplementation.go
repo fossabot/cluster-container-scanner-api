@@ -8,8 +8,11 @@ import (
 	"github.com/armosec/armoapi-go/armotypes"
 )
 
-// ContainerScanVulnerabilityResult
+func NewCommonContainerVulnerabilityResult() ContainerScanVulnerabilityResult {
+	return &CommonContainerVulnerabilityResult{}
+}
 
+// ContainerScanVulnerabilityResult
 func (c *CommonContainerVulnerabilityResult) GetDesignators() armotypes.PortalDesignator {
 	return c.Designators
 }
@@ -111,6 +114,10 @@ func (c *CommonContainerVulnerabilityResult) SetRelatedExceptions(relatedExcepti
 }
 
 // ContainerScanSummaryResult
+func NewContainerScanSummaryResult() ContainerScanSummaryResult {
+	return &CommonContainerScanSummaryResult{}
+}
+
 func (summary *CommonContainerScanSummaryResult) GetContext() []armotypes.ArmoContext {
 	return summary.Context
 }
@@ -255,6 +262,10 @@ func (summary *CommonContainerScanSummaryResult) SetTimestamp(timestamp int64) {
 }
 
 // Vulnerability
+func NewVulnerability() VulnerabilityResult {
+	return &Vulnerability{}
+}
+
 func (v *Vulnerability) GetName() string {
 	return v.Name
 }
@@ -384,6 +395,10 @@ func (v *Vulnerability) SetIsRelevant(isRelevant *bool) {
 }
 
 // ScanResultReportV1
+func NewScanResultReportV1() ScanReport {
+	return &ScanResultReportV1{}
+}
+
 func (v *ScanResultReport) AsFNVHash() string {
 	hasher := fnv.New64a()
 	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
@@ -415,6 +430,9 @@ func (r *ScanResultReportV1) GetCustomerGUID() string {
 }
 
 func (r *ScanResultReportV1) GetSummary() ContainerScanSummaryResult {
+	if r.Summary == nil {
+		return nil
+	}
 	return r.Summary
 }
 

@@ -6,7 +6,7 @@ import (
 	"github.com/armosec/armoapi-go/armotypes"
 )
 
-type CommonContainerVulnerabilityResult struct {
+type CommonContainerVulnerabilityResult struct { // implements ContainerScanVulnerabilityResult
 	Designators       armotypes.PortalDesignator               `json:"designators"`
 	Context           []armotypes.ArmoContext                  `json:"context"`
 	WLID              string                                   `json:"wlid"`
@@ -73,7 +73,7 @@ type CommonContainerScanSeveritySummary struct {
 	DayDate         string `json:"dayDate"`
 }
 
-type CommonContainerScanSummaryResult struct {
+type CommonContainerScanSummaryResult struct { // implements ContainerScanSummaryResult
 	SeverityStats
 	Designators                   armotypes.PortalDesignator `json:"designators"`
 	Context                       []armotypes.ArmoContext    `json:"context"`

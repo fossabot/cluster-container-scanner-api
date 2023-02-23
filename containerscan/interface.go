@@ -17,6 +17,7 @@ type ScanReport interface {
 	GetVersion() string
 	GetPaginationInfo() apis.PaginationMarks
 	GetHasRelevancyData() bool
+	Validate() bool
 
 	SetDesignators(armotypes.PortalDesignator)
 	SetContainerScanID(string)
@@ -95,7 +96,6 @@ type ContainerScanVulnerabilityResult interface {
 }
 
 type VulnerabilityResult interface {
-	// Getters
 	GetName() string
 	GetImageID() string
 	GetImageTag() string
@@ -113,7 +113,6 @@ type VulnerabilityResult interface {
 	GetCategories() VulnerabilityCategory
 	GetExceptionApplied() []armotypes.VulnerabilityExceptionPolicy
 
-	// Setters
 	SetName(string)
 	SetImageID(string)
 	SetImageTag(string)
@@ -130,16 +129,4 @@ type VulnerabilityResult interface {
 	SetHealthStatus(string)
 	SetCategories(VulnerabilityCategory)
 	SetExceptionApplied([]armotypes.VulnerabilityExceptionPolicy)
-}
-
-func NewScanReport() ScanReport {
-	return &ScanResultReportV1{}
-}
-
-func NewContainerScanSummaryResult() ContainerScanSummaryResult {
-	return &CommonContainerScanSummaryResult{}
-}
-
-func NewVulnerabilityResult() VulnerabilityResult {
-	return &Vulnerability{}
 }

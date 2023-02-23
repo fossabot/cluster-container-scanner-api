@@ -27,7 +27,7 @@ type ScanResultReport struct {
 }
 
 // ScanResultReportV1 replaces ScanResultReport
-type ScanResultReportV1 struct {
+type ScanResultReportV1 struct { // implements ScanReport
 	Designators      armotypes.PortalDesignator           `json:"designators"`
 	Timestamp        int64                                `json:"timestamp"`
 	ContainerScanID  string                               `json:"containersScanID"`
@@ -50,7 +50,7 @@ type VulnerabilityCategory struct {
 }
 
 // Vulnerability - a vul object
-type Vulnerability struct {
+type Vulnerability struct { // implements VulnerabilityResult
 	Name               string                                   `json:"name"`
 	ImageID            string                                   `json:"imageHash"`
 	ImageTag           string                                   `json:"imageTag"`
