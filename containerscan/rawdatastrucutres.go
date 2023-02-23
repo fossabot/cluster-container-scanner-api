@@ -52,7 +52,7 @@ type VulnerabilityCategory struct {
 // Vulnerability - a vul object
 type Vulnerability struct {
 	Name               string                                   `json:"name"`
-	ImageID            string                                   `json:"imageID"`
+	ImageID            string                                   `json:"imageHash"`
 	ImageTag           string                                   `json:"imageTag"`
 	RelatedPackageName string                                   `json:"packageName"`
 	PackageVersion     string                                   `json:"packageVersion"`

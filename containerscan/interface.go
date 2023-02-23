@@ -94,43 +94,6 @@ type ContainerScanVulnerabilityResult interface {
 	SetRelatedExceptions(relatedExceptions []armotypes.VulnerabilityExceptionPolicy)
 }
 
-type ContainerScanVulnerability interface {
-	GetName() string
-	GetImageID() string
-	GetImageTag() string
-	GetRelatedPackageName() string
-	GetPackageVersion() string
-	GetLink() string
-	GetDescription() string
-	GetSeverity() string
-	GetSeverityScore() int
-	GetFixes() VulFixes
-	GetUrgentCount() int
-	GetNeglectedCount() int
-	GetHealthStatus() string
-	GetCategories() VulnerabilityCategory
-	GetExceptionApplied() []armotypes.VulnerabilityExceptionPolicy
-
-	SetName(string)
-	SetImageHash(string)
-	SetImageTag(string)
-	SetRelatedPackageName(string)
-	SetPackageVersion(string)
-	SetLink(string)
-	SetDescription(string)
-	SetSeverity(string)
-	SetSeverityScore(int)
-	SetFixes(VulFixes)
-	SetUrgentCount(int)
-	SetNeglectedCount(int)
-	SetHealthStatus(string)
-	SetCategories(VulnerabilityCategory)
-	SetExceptionApplied([]armotypes.VulnerabilityExceptionPolicy)
-
-	IsRCE() bool
-	HasRelevancyData() bool
-}
-
 type VulnerabilityResult interface {
 	// Getters
 	GetName() string

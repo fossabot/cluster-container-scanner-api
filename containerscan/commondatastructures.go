@@ -73,14 +73,6 @@ type CommonContainerScanSeveritySummary struct {
 	DayDate         string `json:"dayDate"`
 }
 
-func NewContainerScanResult() ContainerScanSummaryResult {
-	return &CommonContainerScanSummaryResult{
-		SeverityStats: SeverityStats{
-			Severity: "info",
-		},
-	}
-}
-
 type CommonContainerScanSummaryResult struct {
 	SeverityStats
 	Designators                   armotypes.PortalDesignator `json:"designators"`
@@ -90,7 +82,7 @@ type CommonContainerScanSummaryResult struct {
 	ContainerScanID               string                     `json:"containersScanID"`
 	Timestamp                     int64                      `json:"timestamp"`
 	WLID                          string                     `json:"wlid"`
-	ImageID                       string                     `json:"imageID"`
+	ImageID                       string                     `json:"imageHash"`
 	ImageTag                      string                     `json:"imageTag"`
 	ClusterName                   string                     `json:"clusterName"`
 	Namespace                     string                     `json:"namespace"`
