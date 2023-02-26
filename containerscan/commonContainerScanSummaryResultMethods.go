@@ -2,7 +2,6 @@ package containerscan
 
 import "github.com/armosec/armoapi-go/armotypes"
 
-// ContainerScanSummaryResult
 func NewContainerScanSummaryResult() ContainerScanSummaryResult {
 	return &CommonContainerScanSummaryResult{}
 }
