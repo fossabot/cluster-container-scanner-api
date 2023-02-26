@@ -1,6 +1,9 @@
 package containerscan
 
 import (
+	"fmt"
+	"hash/fnv"
+
 	"github.com/armosec/armoapi-go/apis"
 
 	"github.com/armosec/armoapi-go/armotypes"
@@ -9,6 +12,7 @@ import (
 //!!!!!!!!!!!!EVERY CHANGE IN THESE STRUCTURES => CHANGE gojayunmarshaller ASWELL!!!!!!!!!!!!!!!!!!!!!!!!
 
 // ScanResultReport - the report given from scanner to event receiver
+// TODO: remove
 type ScanResultReport struct {
 	Designators              armotypes.PortalDesignator `json:"designators"`
 	CustomerGUID             string                     `json:"customerGUID"`
@@ -26,15 +30,10 @@ type ScanResultReport struct {
 	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
 }
 
-// ScanResultReportV1 replaces ScanResultReport
-type ScanResultReportV1 struct { // implements ScanReport
-	Designators      armotypes.PortalDesignator           `json:"designators"`
-	Timestamp        int64                                `json:"timestamp"`
-	ContainerScanID  string                               `json:"containersScanID"`
-	Vulnerabilities  []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
-	Summary          *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
-	PaginationInfo   apis.PaginationMarks                 `json:"paginationInfo"`
-	HasRelevancyData bool                                 `json:"hasRelevancyData"`
+func (v *ScanResultReport) AsFNVHash() string {
+	hasher := fnv.New64a()
+	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
+	return fmt.Sprintf("%v", hasher.Sum64())
 }
 
 // ScanResultLayer - represents a single layer from container scan result
@@ -50,8 +49,9 @@ type VulnerabilityCategory struct {
 }
 
 // Vulnerability - a vul object
-type Vulnerability struct { // implements VulnerabilityResult
-	Name               string                                   `json:"name"`
+type Vulnerability struct {
+	IsRelevant         *bool                                    `json:"isRelevant,omitempty"`
+	HealthStatus       string                                   `json:"healthStatus"`
 	ImageID            string                                   `json:"imageHash"`
 	ImageTag           string                                   `json:"imageTag"`
 	RelatedPackageName string                                   `json:"packageName"`
@@ -59,14 +59,13 @@ type Vulnerability struct { // implements VulnerabilityResult
 	Link               string                                   `json:"link"`
 	Description        string                                   `json:"description"`
 	Severity           string                                   `json:"severity"`
-	SeverityScore      int                                      `json:"severityScore"`
+	Name               string                                   `json:"name"`
 	Fixes              VulFixes                                 `json:"fixedIn"`
-	IsRelevant         *bool                                    `json:"isRelevant,omitempty"`
-	UrgentCount        int                                      `json:"urgent"`
+	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"`
+	SeverityScore      int                                      `json:"severityScore"`
 	NeglectedCount     int                                      `json:"neglected"`
-	HealthStatus       string                                   `json:"healthStatus"`
+	UrgentCount        int                                      `json:"urgent"`
 	Categories         VulnerabilityCategory                    `json:"categories"`
-	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"` // Active relevant exceptions
 }
 
 // FixedIn when and which pkg was fixed (which version as well)
