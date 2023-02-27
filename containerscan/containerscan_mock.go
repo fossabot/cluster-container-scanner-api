@@ -83,7 +83,6 @@ func GenerateVulnerability(v *Vulnerability) error {
 	er := gojay.NewDecoder(r).DecodeObject(v)
 	v.RelatedPackageName = "coreutils"
 	v.Severity = HighSeverity
-	v.Relevancy = Irelevant
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 
@@ -96,7 +95,6 @@ func GenerateVulnerabilityRCEAndFixed(v *Vulnerability) error {
 	er := gojay.NewDecoder(r).DecodeObject(v)
 	v.RelatedPackageName = "coreutils"
 	v.Severity = HighSeverity
-	v.Relevancy = Irelevant
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 
@@ -109,7 +107,6 @@ func GenerateVulnerabilityRCENotFixed(v *Vulnerability) error {
 	er := gojay.NewDecoder(r).DecodeObject(v)
 	v.RelatedPackageName = "coreutils"
 	v.Severity = HighSeverity
-	v.Relevancy = Irelevant
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 }
@@ -121,7 +118,6 @@ func GenerateVulnerabilityNoRCENoFixed(v *Vulnerability) error {
 	er := gojay.NewDecoder(r).DecodeObject(v)
 	v.RelatedPackageName = "coreutils"
 	v.Severity = HighSeverity
-	v.Relevancy = Irelevant
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 }
@@ -133,7 +129,6 @@ func GenerateVulnerabilityNoRCEAndFixed(v *Vulnerability) error {
 	er := gojay.NewDecoder(r).DecodeObject(v)
 	v.RelatedPackageName = "coreutils"
 	v.Severity = HighSeverity
-	v.Relevancy = Irelevant
 	v.Name = "CVE-" + randSeq(4, nums) + "-" + randSeq(4, nums)
 	return er
 }

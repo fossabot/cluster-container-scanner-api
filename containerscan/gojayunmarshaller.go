@@ -64,7 +64,7 @@ func (pkgs *LinuxPkgs) UnmarshalJSONArray(dec *gojay.Decoder) error {
 	return nil
 }
 
-//--------Vul fixed in----------------------------------
+// --------Vul fixed in----------------------------------
 func (fx *FixedIn) UnmarshalJSONObject(dec *gojay.Decoder, key string) (err error) {
 
 	switch key {
@@ -114,9 +114,9 @@ func (v *Vulnerability) UnmarshalJSONObject(dec *gojay.Decoder, key string) (err
 		err = dec.String(&(v.Name))
 
 	case "imageTag":
-		err = dec.String(&(v.ImgTag))
+		err = dec.String(&(v.ImageTag))
 	case "imageHash":
-		err = dec.String(&(v.ImgHash))
+		err = dec.String(&(v.ImageID))
 
 	case "packageName":
 		err = dec.String(&(v.RelatedPackageName))
@@ -133,14 +133,11 @@ func (v *Vulnerability) UnmarshalJSONObject(dec *gojay.Decoder, key string) (err
 	case "severity":
 		err = dec.String(&(v.Severity))
 
-	case "relevant":
-		err = dec.String(&(v.Relevancy))
-
 	case "fixedIn":
 		err = dec.Array(&(v.Fixes))
 
-	case "metadata":
-		err = dec.Interface(&(v.Metadata))
+	case "isRelevant":
+		err = dec.Bool((v.IsRelevant))
 	}
 
 	return err
@@ -243,20 +240,4 @@ func (scan *ScanResultReport) UnmarshalJSONObject(dec *gojay.Decoder, key string
 
 func (scan *ScanResultReport) NKeys() int {
 	return 0
-}
-
-func (scan *ScanResultReportV1) UnmarshalJSONObject(dec *gojay.Decoder, key string) (err error) {
-	switch key {
-	case "timestamp":
-		err = dec.Int64(&(scan.Timestamp))
-	case "containersScanID":
-		err = dec.String(&(scan.ContainerScanID))
-	case "designators":
-		err = dec.Object(&(scan.Designators))
-	}
-	return err
-}
-
-func (scan *ScanResultReportV1) NKeys() int {
-	return 3
 }

@@ -38,42 +38,19 @@ func TestDecodeScanWIthDangearousArtifacts(t *testing.T) {
 	if sumObj.Registry != "" {
 		t.Errorf("sumObj.Registry = %v", sumObj.Registry)
 	}
-	if sumObj.VersionImage != "nginx:1.18.0" {
+	if sumObj.ImageTagSuffix != "nginx:1.18.0" {
 		t.Errorf("sumObj.VersionImage = %v", sumObj.Registry)
 	}
-	if sumObj.ImgTag != "nginx:1.18.0" {
-		t.Errorf("sumObj.ImgTag = %v", sumObj.ImgTag)
+	if sumObj.ImageTag != "nginx:1.18.0" {
+		t.Errorf("sumObj.ImgTag = %v", sumObj.ImageTag)
 	}
 	if sumObj.Status != "Success" {
 		t.Errorf("sumObj.Status = %v", sumObj.Status)
-	}
-	if len(sumObj.ListOfDangerousArtifcats) != 3 {
-		t.Errorf("sumObj.ListOfDangerousArtifcats = %v", sumObj.ListOfDangerousArtifcats)
 	}
 }
 
 //go:embed fixtures/scanReportV1TestCase.json
 var scanReportV1TestCase string
-
-func TestScanResultReportV1Decoding(t *testing.T) {
-	scanReport := &ScanResultReportV1{}
-	er := gojay.NewDecoder(strings.NewReader(scanReportV1TestCase)).DecodeObject(scanReport)
-	if er != nil {
-		t.Errorf("decode failed due to: %v", er.Error())
-	}
-	assert.Equal(t, "5969736482532194479", scanReport.ContainerScanID)
-	assert.Equal(t, int64(1656250322), scanReport.Timestamp)
-	assert.True(t, scanReport.Validate(), "cannot validate scan report after gojay decoding")
-	assert.Equal(t, armotypes.DesignatorAttributes, scanReport.Designators.DesignatorType)
-	assert.Equal(t, "myCluster", scanReport.Designators.Attributes[armotypes.AttributeCluster])
-	assert.Equal(t, "8190928904639901517", scanReport.Designators.Attributes[armotypes.AttributeWorkloadHash])
-	assert.Equal(t, "myName", scanReport.Designators.Attributes[armotypes.AttributeName])
-	assert.Equal(t, "myNS", scanReport.Designators.Attributes[armotypes.AttributeNamespace])
-	assert.Equal(t, "deployment", scanReport.Designators.Attributes[armotypes.AttributeKind])
-	assert.Equal(t, "e57ec5a0-695f-4777-8366-1c64fada00a0", scanReport.Designators.Attributes[armotypes.AttributeCustomerGUID])
-	assert.Equal(t, "myContainer", scanReport.Designators.Attributes[armotypes.AttributeContainerName])
-
-}
 
 func TestExceptions(t *testing.T) {
 	rhs := &ScanResultReport{}
@@ -292,16 +269,14 @@ func TestReportValidate(t *testing.T) {
 func TestVulnerabilityToShort(t *testing.T) {
 	vul := Vulnerability{
 		Name:               "name",
-		ImgHash:            "imageHash",
-		ImgTag:             "imageTag",
+		ImageID:            "imageHash",
+		ImageTag:           "imageTag",
 		RelatedPackageName: "packageName",
 		PackageVersion:     "packageVersion",
 		Link:               "link",
 		Description:        "description",
 		Severity:           "severity",
 		SeverityScore:      5,
-		Metadata:           "metadata",
-		Relevancy:          "relevant",
 	}
 	short := vul.ToShortVulnerabilityResult()
 	if short.Name != vul.Name {

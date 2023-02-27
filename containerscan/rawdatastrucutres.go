@@ -12,6 +12,7 @@ import (
 //!!!!!!!!!!!!EVERY CHANGE IN THESE STRUCTURES => CHANGE gojayunmarshaller ASWELL!!!!!!!!!!!!!!!!!!!!!!!!
 
 // ScanResultReport - the report given from scanner to event receiver
+// TODO: remove
 type ScanResultReport struct {
 	Designators              armotypes.PortalDesignator `json:"designators"`
 	CustomerGUID             string                     `json:"customerGUID"`
@@ -24,19 +25,15 @@ type ScanResultReport struct {
 	ListOfDangerousArtifcats []string                   `json:"listOfDangerousArtifcats"`
 	Session                  apis.SessionChain          `json:"session,omitempty"`
 
-	ImageSignatureValid           bool                  `json:"imageSignatureValid,omitempty"`
-    ImageHasSignature             bool                  `json:"imageHasSignature,omitempty"`
-    ImageSignatureValidationError string                `json:"imageSignatureValidationError,omitempty"`
+	ImageSignatureValid           bool   `json:"imageSignatureValid,omitempty"`
+	ImageHasSignature             bool   `json:"imageHasSignature,omitempty"`
+	ImageSignatureValidationError string `json:"imageSignatureValidationError,omitempty"`
 }
 
-//ScanResultReportV1 replaces ScanResultReport
-type ScanResultReportV1 struct {
-	Designators     armotypes.PortalDesignator           `json:"designators"`
-	Timestamp       int64                                `json:"timestamp"`
-	ContainerScanID string                               `json:"containersScanID"`
-	Vulnerabilities []CommonContainerVulnerabilityResult `json:"vulnerabilities"`
-	Summary         *CommonContainerScanSummaryResult    `json:"summary,omitempty"`
-	PaginationInfo  apis.PaginationMarks                 `json:"paginationInfo"`
+func (v *ScanResultReport) AsFNVHash() string {
+	hasher := fnv.New64a()
+	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
+	return fmt.Sprintf("%v", hasher.Sum64())
 }
 
 // ScanResultLayer - represents a single layer from container scan result
@@ -53,23 +50,22 @@ type VulnerabilityCategory struct {
 
 // Vulnerability - a vul object
 type Vulnerability struct {
-	Name               string                                   `json:"name"`
-	ImgHash            string                                   `json:"imageHash"`
-	ImgTag             string                                   `json:"imageTag"`
+	IsRelevant         *bool                                    `json:"isRelevant,omitempty"`
+	HealthStatus       string                                   `json:"healthStatus"`
+	ImageID            string                                   `json:"imageHash"`
+	ImageTag           string                                   `json:"imageTag"`
 	RelatedPackageName string                                   `json:"packageName"`
 	PackageVersion     string                                   `json:"packageVersion"`
 	Link               string                                   `json:"link"`
 	Description        string                                   `json:"description"`
 	Severity           string                                   `json:"severity"`
-	SeverityScore      int                                      `json:"severityScore"`
-	Metadata           interface{}                              `json:"metadata"`
+	Name               string                                   `json:"name"`
 	Fixes              VulFixes                                 `json:"fixedIn"`
-	Relevancy          string                                   `json:"relevant"` // use the related enum
-	UrgentCount        int                                      `json:"urgent"`
+	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"`
+	SeverityScore      int                                      `json:"severityScore"`
 	NeglectedCount     int                                      `json:"neglected"`
-	HealthStatus       string                                   `json:"healthStatus"`
+	UrgentCount        int                                      `json:"urgent"`
 	Categories         VulnerabilityCategory                    `json:"categories"`
-	ExceptionApplied   []armotypes.VulnerabilityExceptionPolicy `json:"exceptionApplied,omitempty"` // Active relevant exceptions
 }
 
 // FixedIn when and which pkg was fixed (which version as well)
@@ -93,23 +89,17 @@ type PackageFile struct {
 
 // types to provide unmarshalling:
 
-//VulnerabilitiesList -s.e
+// VulnerabilitiesList -s.e
 type LayersList []ScanResultLayer
 
-//VulnerabilitiesList -s.e
+// VulnerabilitiesList -s.e
 type VulnerabilitiesList []Vulnerability
 
-//LinuxPkgs - slice of linux pkgs
+// LinuxPkgs - slice of linux pkgs
 type LinuxPkgs []LinuxPackage
 
-//VulFixes - information bout when/how this vul was fixed
+// VulFixes - information bout when/how this vul was fixed
 type VulFixes []FixedIn
 
-//PkgFiles - slice of files belong to specific pkg
+// PkgFiles - slice of files belong to specific pkg
 type PkgFiles []PackageFile
-
-func (v *ScanResultReport) AsFNVHash() string {
-	hasher := fnv.New64a()
-	hasher.Write([]byte(fmt.Sprintf("%v", *v)))
-	return fmt.Sprintf("%v", hasher.Sum64())
-}
