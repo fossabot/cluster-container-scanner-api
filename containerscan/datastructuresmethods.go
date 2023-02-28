@@ -28,8 +28,21 @@ func (layer *ScanResultLayer) GetPackagesNames() []string {
 	return pkgsNames
 }
 
+// GenerateBogusHash - generate the old (bogus) hash for the workload
+func GenerateBogusHash(wlid string) string {
+	context := armotypes.AttributesDesignatorsFromWLID(wlid).Attributes
+	context[armotypes.AttributeNamespace] = ""
+	return generateWorkloadHash(context)
+}
+
+// GenerateWorkloadHash - generate a hash for the workload
+func GenerateWorkloadHash(wlid string) string {
+	context := armotypes.AttributesDesignatorsFromWLID(wlid).Attributes
+	return generateWorkloadHash(context)
+}
+
 func generateWorkloadHash(context map[string]string) string {
-	strForHash := context["cluster"] + context["nameapce"] + context["kind"] + context["name"] + context["containerName"]
+	strForHash := context[armotypes.AttributeCluster] + context[armotypes.AttributeNamespace] + context[armotypes.AttributeKind] + context[armotypes.AttributeName] + context[armotypes.AttributeContainerName]
 	hasher := fnv.New64a()
 	hasher.Write([]byte(strForHash))
 	return fmt.Sprintf("%v", hasher.Sum64())
