@@ -29,15 +29,13 @@ func (layer *ScanResultLayer) GetPackagesNames() []string {
 }
 
 // GenerateBogusHash - generate the old (bogus) hash for the workload
-func GenerateBogusHash(wlid string) string {
-	context := armotypes.AttributesDesignatorsFromWLID(wlid).Attributes
+func GenerateBogusHash(context map[string]string) string {
 	context[armotypes.AttributeNamespace] = ""
 	return generateWorkloadHash(context)
 }
 
 // GenerateWorkloadHash - generate a hash for the workload
-func GenerateWorkloadHash(wlid string) string {
-	context := armotypes.AttributesDesignatorsFromWLID(wlid).Attributes
+func GenerateWorkloadHash(context map[string]string) string {
 	return generateWorkloadHash(context)
 }
 
