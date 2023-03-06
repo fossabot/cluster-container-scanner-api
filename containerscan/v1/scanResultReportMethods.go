@@ -43,10 +43,6 @@ func (r *ScanResultReport) GetSummary() containerscan.ContainerScanSummaryResult
 	return r.Summary
 }
 
-func (r *ScanResultReport) GetHasRelevancyData() bool {
-	return r.HasRelevancyData
-}
-
 func (r *ScanResultReport) GetVulnerabilities() []containerscan.ContainerScanVulnerabilityResult {
 	var vulnerabilities []containerscan.ContainerScanVulnerabilityResult
 	for _, vul := range r.Vulnerabilities {
@@ -111,8 +107,7 @@ func (scan *ScanResultReport) UnmarshalJSONObject(dec *gojay.Decoder, key string
 		err = dec.String(&(scan.ContainerScanID))
 	case "designators":
 		err = dec.Object(&(scan.Designators))
-	case "hasRelevancyData":
-		err = dec.Bool(&(scan.HasRelevancyData))
+
 	}
 	return err
 }

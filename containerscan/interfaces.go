@@ -16,7 +16,6 @@ type ScanReport interface {
 	GetVulnerabilities() []ContainerScanVulnerabilityResult
 	GetVersion() string
 	GetPaginationInfo() apis.PaginationMarks
-	GetHasRelevancyData() bool
 	Validate() bool
 
 	SetDesignators(armotypes.PortalDesignator)
@@ -46,6 +45,7 @@ type ContainerScanSummaryResult interface {
 	GetTimestamp() int64
 	GetJobIDs() []string
 	Validate() bool
+	GetHasRelevancyData() bool
 
 	SetDesignators(armotypes.PortalDesignator)
 	SetContext([]armotypes.ArmoContext)
@@ -64,6 +64,7 @@ type ContainerScanSummaryResult interface {
 	SetCustomerGUID(string)
 	SetContainerScanID(string)
 	SetTimestamp(int64)
+	SetHasRelevancyData(bool)
 }
 
 type ContainerScanVulnerabilityResult interface {
