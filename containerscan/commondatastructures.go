@@ -97,4 +97,5 @@ type CommonContainerScanSummaryResult struct {
 	Timestamp                     int64                      `json:"timestamp"`
 	ImageSignatureValid           bool                       `json:"imageSignatureValid,omitempty"`
 	ImageHasSignature             bool                       `json:"imageHasSignature,omitempty"`
+	HasRelevancyData              bool                       `json:"hasRelevancyData"`
 }

@@ -148,3 +148,11 @@ func (summary *CommonContainerScanSummaryResult) SetVersion(version string) {
 func (summary *CommonContainerScanSummaryResult) SetTimestamp(timestamp int64) {
 	summary.Timestamp = timestamp
 }
+
+func (summary *CommonContainerScanSummaryResult) GetHasRelevancyData() bool {
+	return summary.HasRelevancyData
+}
+
+func (summary *CommonContainerScanSummaryResult) SetHasRelevancyData(hasRelevancy bool) {
+	summary.HasRelevancyData = hasRelevancy
+}

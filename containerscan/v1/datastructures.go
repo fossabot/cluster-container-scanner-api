@@ -7,11 +7,10 @@ import (
 )
 
 type ScanResultReport struct {
-	Designators      armotypes.PortalDesignator                         `json:"designators"`
-	Summary          *containerscan.CommonContainerScanSummaryResult    `json:"summary,omitempty"`
-	ContainerScanID  string                                             `json:"containersScanID"`
-	Vulnerabilities  []containerscan.CommonContainerVulnerabilityResult `json:"vulnerabilities"`
-	PaginationInfo   apis.PaginationMarks                               `json:"paginationInfo"`
-	Timestamp        int64                                              `json:"timestamp"`
-	HasRelevancyData bool                                               `json:"hasRelevancyData"`
+	Designators     armotypes.PortalDesignator                         `json:"designators"`
+	Summary         *containerscan.CommonContainerScanSummaryResult    `json:"summary,omitempty"`
+	ContainerScanID string                                             `json:"containersScanID"`
+	Vulnerabilities []containerscan.CommonContainerVulnerabilityResult `json:"vulnerabilities"`
+	PaginationInfo  apis.PaginationMarks                               `json:"paginationInfo"`
+	Timestamp       int64                                              `json:"timestamp"`
 }
