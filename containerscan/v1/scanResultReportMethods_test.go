@@ -150,3 +150,56 @@ func TestSetTimestamp(t *testing.T) {
 		t.Errorf("Expected SetTimestamp() to set the timestamp of a ScanResultReportV1 to 12345, but it was set to %d", report.GetTimestamp())
 	}
 }
+
+func TestGetVulnerabilities(t *testing.T) {
+	report := ScanResultReport{Vulnerabilities: []containerscan.CommonContainerVulnerabilityResult{
+		{
+			Vulnerability: containerscan.Vulnerability{
+				Name:    "CVE-1",
+				ImageID: "sha256:1",
+			},
+			ContainerScanID: "12345",
+		},
+		{
+			Vulnerability: containerscan.Vulnerability{
+				Name:    "CVE-2",
+				ImageID: "sha256:2",
+			},
+			ContainerScanID: "12345",
+		},
+		{
+			Vulnerability: containerscan.Vulnerability{
+				Name:    "CVE-3",
+				ImageID: "sha256:3",
+			},
+			ContainerScanID: "12345",
+		},
+		{
+			Vulnerability: containerscan.Vulnerability{
+				Name:    "CVE-4",
+				ImageID: "sha256:4",
+			},
+			ContainerScanID: "3333",
+		},
+	}}
+
+	vulns := report.GetVulnerabilities()
+
+	assert.Equal(t, 4, len(vulns))
+
+	assert.Equal(t, "CVE-1", vulns[0].GetVulnerability().GetName())
+	assert.Equal(t, "CVE-2", vulns[1].GetVulnerability().GetName())
+	assert.Equal(t, "CVE-3", vulns[2].GetVulnerability().GetName())
+	assert.Equal(t, "CVE-4", vulns[3].GetVulnerability().GetName())
+
+	assert.Equal(t, "sha256:1", vulns[0].GetVulnerability().GetImageID())
+	assert.Equal(t, "sha256:2", vulns[1].GetVulnerability().GetImageID())
+	assert.Equal(t, "sha256:3", vulns[2].GetVulnerability().GetImageID())
+	assert.Equal(t, "sha256:4", vulns[3].GetVulnerability().GetImageID())
+
+	assert.Equal(t, "12345", vulns[0].GetContainerScanID())
+	assert.Equal(t, "12345", vulns[1].GetContainerScanID())
+	assert.Equal(t, "12345", vulns[2].GetContainerScanID())
+	assert.Equal(t, "3333", vulns[3].GetContainerScanID())
+
+}
