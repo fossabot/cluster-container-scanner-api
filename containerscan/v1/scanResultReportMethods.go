@@ -45,8 +45,8 @@ func (r *ScanResultReport) GetSummary() containerscan.ContainerScanSummaryResult
 
 func (r *ScanResultReport) GetVulnerabilities() []containerscan.ContainerScanVulnerabilityResult {
 	var vulnerabilities []containerscan.ContainerScanVulnerabilityResult
-	for _, vul := range r.Vulnerabilities {
-		vulnerabilities = append(vulnerabilities, &vul)
+	for i := range r.Vulnerabilities {
+		vulnerabilities = append(vulnerabilities, &r.Vulnerabilities[i])
 	}
 	return vulnerabilities
 }
