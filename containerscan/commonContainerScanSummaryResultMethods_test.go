@@ -252,3 +252,15 @@ func Test_CommonContainerScanSummaryResult_SetRelevantLabel(t *testing.T) {
 	summary.SetRelevantLabel("test2")
 	assert.Equal(t, RelevantLabel("test2"), summary.RelevantLabel)
 }
+
+func TestGetHasRelevancyData(t *testing.T) {
+	reportWithRelevancy := CommonContainerScanSummaryResult{HasRelevancyData: true}
+	if !reportWithRelevancy.GetHasRelevancyData() {
+		t.Error("Expected GetHasRelevancyData() to return true for a ScanResultReportV1 with relevancy data, but it returned false")
+	}
+
+	reportWithoutRelevancy := CommonContainerScanSummaryResult{HasRelevancyData: false}
+	if reportWithoutRelevancy.GetHasRelevancyData() {
+		t.Error("Expected GetHasRelevancyData() to return false for a ScanResultReportV1 without relevancy data, but it returned true")
+	}
+}

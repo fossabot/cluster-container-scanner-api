@@ -105,4 +105,5 @@ type CommonContainerScanSummaryResult struct {
 	ImageSignatureValid           bool                       `json:"imageSignatureValid,omitempty"`
 	ImageHasSignature             bool                       `json:"imageHasSignature,omitempty"`
 	RelevantLabel                 RelevantLabel              `json:"relevantLabel"`
+	HasRelevancyData              bool                       `json:"hasRelevancyData"`
 }
