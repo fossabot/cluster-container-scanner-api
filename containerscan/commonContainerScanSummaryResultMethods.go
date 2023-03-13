@@ -78,6 +78,10 @@ func (summary *CommonContainerScanSummaryResult) GetJobIDs() []string {
 	return summary.JobIDs
 }
 
+func (summary *CommonContainerScanSummaryResult) GetRelevantLabel() RelevantLabel {
+	return summary.RelevantLabel
+}
+
 func (summary *CommonContainerScanSummaryResult) Validate() bool {
 	return summary.CustomerGUID != "" && summary.ContainerScanID != "" && (summary.ImageTag != "" || summary.ImageID != "") && summary.Timestamp > 0
 }
@@ -147,4 +151,8 @@ func (summary *CommonContainerScanSummaryResult) SetVersion(version string) {
 
 func (summary *CommonContainerScanSummaryResult) SetTimestamp(timestamp int64) {
 	summary.Timestamp = timestamp
+}
+
+func (summary *CommonContainerScanSummaryResult) SetRelevantLabel(label RelevantLabel) {
+	summary.RelevantLabel = label
 }

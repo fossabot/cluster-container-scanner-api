@@ -237,3 +237,18 @@ func TestGetSeverityStats(t *testing.T) {
 	assert.Equal(t, int64(15), stats.TotalCount)
 	assert.Equal(t, "critical", stats.Severity)
 }
+
+func Test_CommonContainerScanSummaryResult_GetRelevantLabel(t *testing.T) {
+	summary := &CommonContainerScanSummaryResult{
+		RelevantLabel: "test",
+	}
+	assert.Equal(t, RelevantLabel("test"), summary.GetRelevantLabel())
+}
+
+func Test_CommonContainerScanSummaryResult_SetRelevantLabel(t *testing.T) {
+	summary := &CommonContainerScanSummaryResult{
+		RelevantLabel: "test",
+	}
+	summary.SetRelevantLabel("test2")
+	assert.Equal(t, RelevantLabel("test2"), summary.RelevantLabel)
+}
