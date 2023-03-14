@@ -239,18 +239,20 @@ func TestGetSeverityStats(t *testing.T) {
 }
 
 func Test_CommonContainerScanSummaryResult_GetRelevantLabel(t *testing.T) {
-	summary := &CommonContainerScanSummaryResult{
-		RelevantLabel: "test",
-	}
-	assert.Equal(t, RelevantLabel("test"), summary.GetRelevantLabel())
+	summary := &CommonContainerScanSummaryResult{}
+	assert.Equal(t, RelevantLabelNotExists, summary.GetRelevantLabel())
+
+	summary.RelevantLabel = RelevantLabelYes
+	assert.Equal(t, RelevantLabelYes, summary.GetRelevantLabel())
+
 }
 
 func Test_CommonContainerScanSummaryResult_SetRelevantLabel(t *testing.T) {
-	summary := &CommonContainerScanSummaryResult{
-		RelevantLabel: "test",
-	}
-	summary.SetRelevantLabel("test2")
-	assert.Equal(t, RelevantLabel("test2"), summary.RelevantLabel)
+	summary := &CommonContainerScanSummaryResult{}
+	assert.Equal(t, RelevantLabelNotExists, summary.RelevantLabel)
+
+	summary.SetRelevantLabel(RelevantLabelNo)
+	assert.Equal(t, RelevantLabelNo, summary.RelevantLabel)
 }
 
 func TestGetHasRelevancyData(t *testing.T) {
