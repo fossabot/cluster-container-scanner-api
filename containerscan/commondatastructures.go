@@ -6,6 +6,12 @@ import (
 	"github.com/armosec/armoapi-go/armotypes"
 )
 
+type RelevantLabel string
+
+const RelevantLabelYes RelevantLabel = "yes"
+const RelevantLabelNo RelevantLabel = "no"
+const RelevantLabelNotExists RelevantLabel = ""
+
 type CommonContainerVulnerabilityResult struct {
 	Designators       armotypes.PortalDesignator `json:"designators"`
 	IntroducedInLayer string                     `json:"layerHash"`
@@ -20,6 +26,7 @@ type CommonContainerVulnerabilityResult struct {
 	Timestamp         int64                                    `json:"timestamp"`
 	IsLastScan        int                                      `json:"isLastScan"`
 	IsFixed           int                                      `json:"isFixed"`
+	RelevantLabel     RelevantLabel                            `json:"relevantLabel"`
 }
 
 type ESLayer struct {
@@ -35,16 +42,16 @@ type LayerInfo struct {
 }
 
 type SeverityStats struct {
-	Severity                     string `json:"severity,omitempty"`
-	HealthStatus                 string `json:"healthStatus"`
-	TotalCount                   int64  `json:"total"`
-	RCEFixCount                  int64  `json:"rceFixCount"`
-	FixAvailableOfTotalCount     int64  `json:"fixedTotal"`
-	RelevantCount                int64  `json:"totalRelevant"`
-	FixAvailableForRelevantCount int64  `json:"fixedRelevant"`
-	RCECount                     int64  `json:"rceTotal"`
-	UrgentCount                  int64  `json:"urgent"`
-	NeglectedCount               int64  `json:"neglected"`
+	Severity                 string `json:"severity,omitempty"`
+	HealthStatus             string `json:"healthStatus"`
+	TotalCount               int64  `json:"total"`
+	RCEFixCount              int64  `json:"rceFixCount"`
+	RelevantFixCount         int64  `json:"relevantFixCount"`
+	FixAvailableOfTotalCount int64  `json:"fixedTotal"`
+	RelevantCount            int64  `json:"relevantTotal"`
+	RCECount                 int64  `json:"rceTotal"`
+	UrgentCount              int64  `json:"urgent"`
+	NeglectedCount           int64  `json:"neglected"`
 }
 
 type ShortVulnerabilityResult struct {
@@ -97,5 +104,6 @@ type CommonContainerScanSummaryResult struct {
 	Timestamp                     int64                      `json:"timestamp"`
 	ImageSignatureValid           bool                       `json:"imageSignatureValid,omitempty"`
 	ImageHasSignature             bool                       `json:"imageHasSignature,omitempty"`
+	RelevantLabel                 RelevantLabel              `json:"relevantLabel"`
 	HasRelevancyData              bool                       `json:"hasRelevancyData"`
 }

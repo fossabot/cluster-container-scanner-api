@@ -44,6 +44,7 @@ type ContainerScanSummaryResult interface {
 	GetContainerScanID() string
 	GetTimestamp() int64
 	GetJobIDs() []string
+	GetRelevantLabel() RelevantLabel
 	Validate() bool
 	GetHasRelevancyData() bool
 
@@ -64,6 +65,7 @@ type ContainerScanSummaryResult interface {
 	SetCustomerGUID(string)
 	SetContainerScanID(string)
 	SetTimestamp(int64)
+	SetRelevantLabel(RelevantLabel)
 	SetHasRelevancyData(bool)
 }
 
@@ -81,6 +83,7 @@ type ContainerScanVulnerabilityResult interface {
 	GetRelevantLinks() []string
 	GetRelatedExceptions() []armotypes.VulnerabilityExceptionPolicy
 	GetVulnerability() VulnerabilityResult
+	GetRelevantLabel() RelevantLabel
 
 	SetDesignators(designators armotypes.PortalDesignator)
 	SetContext(context []armotypes.ArmoContext)
@@ -94,6 +97,7 @@ type ContainerScanVulnerabilityResult interface {
 	SetIntroducedInLayer(introducedInLayer string)
 	SetRelevantLinks(relevantLinks []string)
 	SetRelatedExceptions(relatedExceptions []armotypes.VulnerabilityExceptionPolicy)
+	SetRelevantLabel(relevantLabel RelevantLabel)
 }
 
 type VulnerabilityResult interface {

@@ -82,8 +82,8 @@ func TestExceptions(t *testing.T) {
 	if excludedStats.RelevantCount != 0 {
 		t.Errorf("excludedStats.RelevantCount = %v", excludedStats.RelevantCount)
 	}
-	if excludedStats.FixAvailableForRelevantCount != 0 {
-		t.Errorf("excludedStats.FixAvailableForRelevantCount = %v", excludedStats.FixAvailableForRelevantCount)
+	if excludedStats.RelevantFixCount != 0 {
+		t.Errorf("excludedStats.FixAvailableForRelevantCount = %v", excludedStats.RelevantFixCount)
 	}
 	if excludedStats.RCECount != 1 {
 		t.Errorf("excludedStats.RCECount = %v", excludedStats.RCECount)
@@ -105,8 +105,8 @@ func TestExceptions(t *testing.T) {
 	if regularSum.RelevantCount != (sumObj.RelevantCount + excludedStats.RelevantCount) {
 		t.Errorf("sumObj.RelevantCount = %v", sumObj.RelevantCount)
 	}
-	if regularSum.FixAvailableForRelevantCount != (sumObj.FixAvailableForRelevantCount + excludedStats.FixAvailableForRelevantCount) {
-		t.Errorf("sumObj.FixAvailableForRelevantCoun = %v", sumObj.FixAvailableForRelevantCount)
+	if regularSum.RelevantFixCount != (sumObj.RelevantFixCount + excludedStats.RelevantFixCount) {
+		t.Errorf("sumObj.FixAvailableForRelevantCoun = %v", sumObj.RelevantFixCount)
 	}
 	if regularSum.RCECount != (sumObj.RCECount + excludedStats.RCECount) {
 		t.Errorf("sumObj.RCECount = %v", sumObj.RCECount)
