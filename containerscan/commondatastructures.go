@@ -107,3 +107,9 @@ type CommonContainerScanSummaryResult struct {
 	RelevantLabel                 RelevantLabel              `json:"relevantLabel"`
 	HasRelevancyData              bool                       `json:"hasRelevancyData"`
 }
+
+type CommonContainerScanSummaryResultStub struct {
+	CommonContainerScanSummaryResult `json:",inline"`
+	IsStub                           bool     `json:"isStub,omitempty"`
+	ErrorsList                       []string `json:"errors,omitempty"`
+}
