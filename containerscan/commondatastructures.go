@@ -52,6 +52,7 @@ type SeverityStats struct {
 	RCECount                 int64  `json:"rceTotal"`
 	UrgentCount              int64  `json:"urgent"`
 	NeglectedCount           int64  `json:"neglected"`
+	RelevancyScanCount       int64  `json:"relevancyScanCount"`
 }
 
 type ShortVulnerabilityResult struct {
