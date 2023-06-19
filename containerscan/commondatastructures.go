@@ -92,6 +92,7 @@ type CommonContainerScanSummaryResult struct {
 	ImageID                       string                     `json:"imageHash"`
 	ImageTag                      string                     `json:"imageTag"`
 	ClusterName                   string                     `json:"cluster"`
+	ClusterShortName              string                     `json:"clusterShortName"`
 	Namespace                     string                     `json:"namespace"`
 	ContainerName                 string                     `json:"containerName"`
 	ImageTagSuffix                string                     `json:"versionImage"`
