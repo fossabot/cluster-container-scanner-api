@@ -34,6 +34,7 @@ type ContainerScanSummaryResult interface {
 	GetSeverityStats() SeverityStats
 	GetSeveritiesStats() []SeverityStats
 	GetClusterName() string
+	GetClusterShortName() string
 	GetNamespace() string
 	GetContainerName() string
 	GetStatus() string
@@ -56,6 +57,7 @@ type ContainerScanSummaryResult interface {
 	SetSeverityStats(SeverityStats)
 	SetSeveritiesStats([]SeverityStats)
 	SetClusterName(string)
+	SetClusterShortName(string)
 	SetNamespace(string)
 	SetContainerName(string)
 	SetStatus(string)

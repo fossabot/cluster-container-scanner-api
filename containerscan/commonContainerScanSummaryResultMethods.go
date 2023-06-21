@@ -34,6 +34,10 @@ func (summary *CommonContainerScanSummaryResult) GetClusterName() string {
 	return summary.ClusterName
 }
 
+func (summary *CommonContainerScanSummaryResult) GetClusterShortName() string {
+	return summary.ClusterShortName
+}
+
 func (summary *CommonContainerScanSummaryResult) GetNamespace() string {
 	return summary.Namespace
 }
@@ -123,6 +127,10 @@ func (summary *CommonContainerScanSummaryResult) SetSeveritiesStats(severitiesSt
 
 func (summary *CommonContainerScanSummaryResult) SetClusterName(clusterName string) {
 	summary.ClusterName = clusterName
+}
+
+func (summary *CommonContainerScanSummaryResult) SetClusterShortName(clusterShortName string) {
+	summary.ClusterShortName = clusterShortName
 }
 
 func (summary *CommonContainerScanSummaryResult) SetNamespace(namespace string) {
