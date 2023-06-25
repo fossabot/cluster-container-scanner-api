@@ -86,6 +86,7 @@ type ContainerScanVulnerabilityResult interface {
 	GetRelatedExceptions() []armotypes.VulnerabilityExceptionPolicy
 	GetVulnerability() VulnerabilityResult
 	GetRelevantLabel() RelevantLabel
+	GetClusterShortName() string
 
 	SetDesignators(designators armotypes.PortalDesignator)
 	SetContext(context []armotypes.ArmoContext)
@@ -100,6 +101,7 @@ type ContainerScanVulnerabilityResult interface {
 	SetRelevantLinks(relevantLinks []string)
 	SetRelatedExceptions(relatedExceptions []armotypes.VulnerabilityExceptionPolicy)
 	SetRelevantLabel(relevantLabel RelevantLabel)
+	SetClusterShortName(clusterShortName string)
 }
 
 type VulnerabilityResult interface {

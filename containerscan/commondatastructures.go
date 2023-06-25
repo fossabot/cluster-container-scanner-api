@@ -27,6 +27,7 @@ type CommonContainerVulnerabilityResult struct {
 	IsLastScan        int                                      `json:"isLastScan"`
 	IsFixed           int                                      `json:"isFixed"`
 	RelevantLabel     RelevantLabel                            `json:"relevantLabel"`
+	ClusterShortName  string                                   `json:"clusterShortName"`
 }
 
 type ESLayer struct {
