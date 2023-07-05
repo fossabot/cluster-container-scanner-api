@@ -39,6 +39,7 @@ type ContainerScanSummaryResult interface {
 	GetContainerName() string
 	GetStatus() string
 	GetRegistry() string
+	GetRepository() string
 	GetImageTageSuffix() string
 	GetVersion() string
 	GetCustomerGUID() string

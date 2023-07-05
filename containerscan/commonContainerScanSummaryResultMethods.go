@@ -51,10 +51,40 @@ func (summary *CommonContainerScanSummaryResult) GetStatus() string {
 }
 
 func (summary *CommonContainerScanSummaryResult) GetRegistry() string {
-	return summary.Registry
+	if summary.Registry != "" {
+		return summary.Registry
+	}
+	if summary.ImageID != "" {
+		return getRegistryFromImageID(summary.ImageID)
+	}
+
+	if summary.ImageTag != "" {
+		return getRegistryFromImageID(summary.ImageTag)
+	}
+	return ""
+}
+
+func (summary *CommonContainerScanSummaryResult) GetRepository() string {
+	if summary.ImageID != "" {
+		return getRepositoryFromImageID(summary.ImageID)
+	}
+
+	if summary.ImageTag != "" {
+		return getRepositoryFromImageID(summary.ImageTag)
+	}
+	return ""
 }
 
 func (summary *CommonContainerScanSummaryResult) GetImageTageSuffix() string {
+	if summary.ImageTagSuffix != "" {
+		return summary.ImageTagSuffix
+	}
+	if summary.ImageID != "" {
+		return getImageTagFromImageID(summary.ImageID)
+	}
+	if summary.ImageTag != "" {
+		return getImageTagFromImageID(summary.ImageTag)
+	}
 	return summary.ImageTagSuffix
 }
 
